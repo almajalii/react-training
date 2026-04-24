@@ -10,7 +10,6 @@ import Profile from './screens/Profile';
 import { clearUser, setUser, setAuthChecked } from './store/authSlice';
 import { getProfileFromFirebase } from './firebase/authFunctions';
 import NavBar from './components/NavBar';
-
 function App() {
   const { user, authChecked } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -64,7 +63,7 @@ authChecked: false, user: {...}  →  impossible, shouldn't happen
         <Route path="/register" element={user ? <Navigate to="/" /> : <Register />} />
         <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
         <Route path="/profile" element={user ? <Profile /> : <Navigate to="/login" />} />
-      </Routes>
+ </Routes>
     </BrowserRouter>
   );
 }

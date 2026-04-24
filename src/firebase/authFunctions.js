@@ -1,4 +1,4 @@
-import {createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut} from 'firebase/auth';
+import {createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut, sendPasswordResetEmail} from 'firebase/auth';
 import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
 import { auth, db } from './config';
 
@@ -62,12 +62,21 @@ export const getProfileFromFirebase = async (uid) => {
         throw error;
     }
 };
-
+// Update profile in Firestore
 export const updateProfileInFirebase = async (uid, updates) => {
     try {
         await updateDoc(doc(db, 'users', uid), updates);
     } catch (error) {
         console.error('Update failed:', error.message);
+        throw error;
+    }
+};
+// Reset password
+export const resetPasswordInFirebase = async (email) => {
+    try {
+        await sendPasswordResetEmail(auth, email);
+    } catch (error) {
+        console.error('Password reset failed:', error.message);
         throw error;
     }
 };
