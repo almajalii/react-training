@@ -1,4 +1,4 @@
-import {createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut, sendPasswordResetEmail} from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail } from 'firebase/auth';
 import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
 import { auth, db } from './config';
 
@@ -29,7 +29,7 @@ export const loginWithFirebase = async (email, password) => {
         const docSnap = await getDoc(doc(db, 'users', userCred.user.uid));
         // If user document exists, return profile data along with auth data
         const profileData = docSnap.exists() ? docSnap.data() : {};
-          
+
         return {
             uid: userCred.user.uid,
             email: userCred.user.email,
