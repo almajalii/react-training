@@ -5,17 +5,17 @@ import en from './en/translation.json';
 import ar from './ar/translation.json';
 
 i18n
-    .use(LanguageDetector)
-    .use(initReactI18next)
+    .use(LanguageDetector)//detects language from localStorage or browser settings
+    .use(initReactI18next)//connects i18n to React
     .init({
         resources: {
-            en: { translation: en },
-            ar: { translation: ar },
+            en: { translation: en }, //loads the en json
+            ar: { translation: ar }, // loads the ar json
         },
-        fallbackLng: 'en',
+        fallbackLng: 'en', //use English if language detection fails
         detection: {
-            order: ['localStorage', 'navigator'],
-            caches: ['localStorage']
+            order: ['localStorage', 'navigator'], //where to look for saved langauges
+            caches: ['localStorage']//where to save the choice
         },
         react: {
             useSuspense: false,

@@ -1,5 +1,4 @@
 import { useProfile } from "./useProfile";
-import { useTranslation } from 'react-i18next';
 import { Button, Card, CardBody } from '@heroui/react';
 
 function Profile() {
@@ -8,24 +7,8 @@ function Profile() {
         username, handleUsernameChange,
         bio, handleBioChange,
         loading, success,
-        handleSubmit,
+        handleSubmit,t,isRTL,inputClass,labelClass
     } = useProfile();
-
-    const { t, i18n } = useTranslation();
-    const isRTL = i18n.language === 'ar';
-
-    const labelClass = "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5";
-    const inputClass = [
-        "w-full px-4 py-2.5 text-sm rounded-xl",
-        "border border-gray-200 dark:border-gray-700",
-        "bg-white dark:bg-gray-800",
-        "text-gray-900 dark:text-white",
-        "placeholder:text-gray-400 dark:placeholder:text-gray-500",
-        "outline-none transition-all duration-200",
-        "hover:border-indigo-400 dark:hover:border-indigo-500",
-        "focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10",
-        "dark:focus:border-indigo-400",
-    ].join(" ");
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 px-4 py-10 transition-colors duration-300">

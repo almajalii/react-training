@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUser, setError } from '../../store/authSlice';
 import { loginWithFirebase, resetPasswordInFirebase } from '../../firebase/authFunctions';
+import { labelClass, inputClass } from '../../styles/formStyle';
+import { useTranslation } from 'react-i18next';
 
 export function useLogin() {
     const [email, setEmail] = useState('');
@@ -16,6 +18,8 @@ export function useLogin() {
 
     const { error } = useSelector(state => state.auth);
     const dispatch = useDispatch();
+    const { t, i18n } = useTranslation();
+    const isRTL = i18n.language === 'ar';
 
     useEffect(() => {
         return () => {
@@ -84,6 +88,6 @@ export function useLogin() {
         // navigation
         section, goToForgotPassword, goToLogin,
         // shared
-        error
+        error,t,isRTL,labelClass,inputClass
     };
 }

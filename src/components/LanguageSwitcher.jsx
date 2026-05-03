@@ -17,5 +17,5 @@ function LanguageSwitcher() {
         </button>
     );
 }
-
+//localStorage & React re-renders every component that uses t() automatically
 export default LanguageSwitcher;

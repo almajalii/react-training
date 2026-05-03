@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { updateUserData, setError } from "../../store/authSlice";
 import { updateProfileInFirebase } from "../../firebase/authFunctions";
+import { useTranslation } from 'react-i18next';
+import { labelClass, inputClass } from '../../styles/formStyle';
 
 export function useProfile() {
     const { user, error } = useSelector((state) => state.auth);
@@ -12,6 +14,8 @@ export function useProfile() {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
 
+    const { t, i18n } = useTranslation();
+    const isRTL = i18n.language === 'ar';
     useEffect(() => {
 
         dispatch(setError(null));
@@ -52,6 +56,6 @@ export function useProfile() {
         username, handleUsernameChange,
         bio, handleBioChange,
         loading, success,
-        handleSubmit,
+        handleSubmit,t,isRTL,labelClass,inputClass
     };
 }

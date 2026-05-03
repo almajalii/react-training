@@ -1,19 +1,16 @@
 import { Link } from 'react-router-dom';
 import { useWelcome } from './useWelcome';
-import { useTranslation } from 'react-i18next';
 import { Button, Card, CardBody } from '@heroui/react';
 
 function Welcome() {
-  const { user, error } = useWelcome();
-  const { t } = useTranslation();
-
+  const { user, error, t } = useWelcome();
+  
   return (
     /*  the background */
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 px-4 py-10 transition-colors duration-300">
       {/* the card */}
       <Card className="w-full max-w-md bg-white dark:bg-gray-900 shadow-lg dark:shadow-gray-950/50 border-0 rounded-2xl">
-        <CardBody className="px-10 py-10">
-
+        <CardBody className="px-10 py-10 flex flex-col items-center">
           {user ? (
             <div>
               <h1 className="text-[26px] font-bold text-gray-900 dark:text-white mb-2">
@@ -57,7 +54,6 @@ function Welcome() {
               </Button>
             </>
           )}
-
         </CardBody>
       </Card>
     </div>
