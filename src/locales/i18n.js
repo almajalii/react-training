@@ -1,8 +1,8 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import en from './en/translation.json';
-import ar from './ar/translation.json';
+import en from './en_translation.json';
+import ar from './ar_translation.json';
 
 i18n
     .use(LanguageDetector)//detects language from localStorage or browser settings

@@ -8,14 +8,13 @@ const storage = {
     removeItem: (key) => Promise.resolve(localStorage.removeItem(key)),
 };
 
-const persistConfig = {
-    key: 'root',
+// Persist the auth slice directly — key 'auth' is what gets saved in localStorage
+const authPersistConfig = {
+    key: 'auth',
     storage,
-    whitelist: ['user'],
-    blacklist: ['error', 'authChecked'],
 };
 
-const persistedAuthReducer = persistReducer(persistConfig, authReducer);
+const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
 
 export const store = configureStore({
     reducer: {
@@ -29,18 +28,4 @@ export const store = configureStore({
         }),
 });
 
-export const persistor = persistStore(store);//responsible for rehydrating (loading back) the saved state when the app starts up.
-/* 
-{
-  auth: {
-    user: null | {
-      uid: string,      // Firebase unique ID
-      email: string,    // Email address
-      username: string, // Display name
-      bio: string       // User bio
-    },
-    error: null | string,  // Error message or null
-    authChecked: boolean   // Has Firebase finished checking?
-     }
-} 
-*/
+export const persistor = persistStore(store);
