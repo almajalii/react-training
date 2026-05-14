@@ -1,2 +1,197 @@
 @import "tailwindcss";
-@custom-variant dark (&:is(.dark *));
+
+/* =============================================================================
+   Tailwind v4 theme — register semantic tokens as Tailwind utilities.
+   This must live in CSS in v4 (the JS config in tailwind.config.js is unused).
+   Each entry maps to the matching --gf-* var so light/dark switching is
+   automatic. Custom variant `dark` enables `dark:` prefixes via the `.dark`
+   class on <html>.
+   ========================================================================== */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* Surfaces */
+  --color-page:        var(--gf-page);
+  --color-page-2:      var(--gf-page-2);
+  --color-surface:     var(--gf-surface);
+  --color-surface-2:   var(--gf-surface-2);
+  --color-elev:        var(--gf-elev);
+
+  /* Ink */
+  --color-ink:         var(--gf-ink);
+  --color-ink-soft:    var(--gf-ink-soft);
+  --color-muted:       var(--gf-muted);
+  --color-faint:       var(--gf-faint);
+
+  /* Borders */
+  --color-line:        var(--gf-border);
+  --color-line-2:      var(--gf-border-strong);
+
+  /* Brand */
+  --color-brand:        var(--gf-brand);
+  --color-brand-strong: var(--gf-brand-strong);
+  --color-brand-soft:   var(--gf-brand-soft);
+  --color-brand-tint:   var(--gf-brand-tint);
+
+  /* Accent */
+  --color-accent:        var(--gf-accent);
+  --color-accent-hover:  var(--gf-accent-hover);
+  --color-on-accent:     var(--gf-on-accent);
+
+  /* Chip */
+  --color-chip:        var(--gf-chip);
+  --color-chip-fg:     var(--gf-chip-text);
+
+  /* Shadows */
+  --shadow-card:       var(--gf-shadow-sm);
+  --shadow-card-md:    var(--gf-shadow-md);
+  --shadow-card-lg:    var(--gf-shadow-lg);
+
+  /* Letter-spacing */
+  --tracking-caps:     0.15em;
+  --tracking-tight2:  -0.035em;
+
+  /* Focus ring color */
+  --color-focus:       var(--gf-focus-ring);
+
+  /* Border radius extras */
+  --radius-2_5xl:      1.25rem;
+  --radius-3_5xl:      1.75rem;
+}
+
+/* =============================================================================
+   GoFix theme tokens — single source of truth.
+   Light & dark each redefine the SAME variable names, so components don't need
+   `dark:` color prefixes. Tailwind tokens (bg-page, text-ink, border-line, …)
+   are mapped to these vars in tailwind.config.js.
+   ========================================================================== */
+
+:root {
+  /* ── Surfaces ─────────────────────────────────────────────────────────── */
+  --gf-page:        #F7F3EA;   /* warm cream — main page bg                */
+  --gf-page-2:      #F1ECDF;   /* slightly deeper cream for sections       */
+  --gf-surface:     #FFFFFF;   /* white cards on cream                     */
+  --gf-surface-2:   #FAF7F0;   /* tinted cards / bands                     */
+  --gf-elev:        #FFFFFF;   /* elevated panels / dropdowns              */
+
+  /* ── Ink (text) ───────────────────────────────────────────────────────── */
+  --gf-ink:         #0E1A2B;   /* near-black navy — headings, primary text */
+  --gf-ink-soft:    #1F2A3D;   /* body / secondary headings                */
+  --gf-muted:       #5C6675;   /* warm-cool grey, body & captions          */
+  --gf-faint:       #95A0AF;   /* meta / timestamps / divider dots         */
+
+  /* ── Borders ──────────────────────────────────────────────────────────── */
+  --gf-border:        #E7E2D5; /* warm soft border, blends into cream      */
+  --gf-border-strong: #D6CFBE; /* stronger border on hover / focus         */
+
+  /* ── Brand orange — softened, warmer ─────────────────────────────────── */
+  --gf-brand:        #ED8936;  /* primary brand orange                     */
+  --gf-brand-strong: #C9701F;  /* hover / pressed                          */
+  --gf-brand-soft:   #FBE4C9;  /* peach highlight (e.g. text underline)    */
+  --gf-brand-tint:   #FDF3E4;  /* faint tint for chip backgrounds          */
+
+  /* ── Accent (the dark navy CTA) ───────────────────────────────────────── */
+  --gf-accent:        #0E1A2B;
+  --gf-accent-hover:  #1B2A42;
+  --gf-on-accent:     #FFFFFF;
+
+  /* ── Chip / pill neutral surface ──────────────────────────────────────── */
+  --gf-chip:        #EEF1F4;
+  --gf-chip-text:   #0E1A2B;
+
+  /* ── State / focus ring ───────────────────────────────────────────────── */
+  --gf-focus-ring:  rgba(237, 137, 54, 0.30);
+
+  /* ── Card shadow (warmer, softer) ─────────────────────────────────────── */
+  --gf-shadow-sm:   0 1px 2px 0 rgba(14, 26, 43, 0.04);
+  --gf-shadow-md:   0 1px 2px 0 rgba(14, 26, 43, 0.04), 0 8px 24px -12px rgba(14, 26, 43, 0.10);
+  --gf-shadow-lg:   0 1px 3px 0 rgba(14, 26, 43, 0.05), 0 24px 48px -20px rgba(14, 26, 43, 0.18);
+}
+
+.dark {
+  color-scheme: dark;
+
+  --gf-page:        #0B1726;
+  --gf-page-2:      #0E1B2C;
+  --gf-surface:     #122236;
+  --gf-surface-2:   #0F1E32;
+  --gf-elev:        #16263C;
+
+  --gf-ink:         #EAF1F8;
+  --gf-ink-soft:    #C8D3E1;
+  --gf-muted:       #8B97A9;
+  --gf-faint:       #5E6B7E;
+
+  --gf-border:        #1F3450;
+  --gf-border-strong: #2A4566;
+
+  --gf-brand:        #F3A258;  /* slightly lighter on dark for legibility */
+  --gf-brand-strong: #ED8936;
+  --gf-brand-soft:   #3E2B16;
+  --gf-brand-tint:   #2A1E10;
+
+  --gf-accent:        #EAF1F8;
+  --gf-accent-hover:  #FFFFFF;
+  --gf-on-accent:     #0E1A2B;
+
+  --gf-chip:        #1A2C42;
+  --gf-chip-text:   #EAF1F8;
+
+  --gf-focus-ring:  rgba(243, 162, 88, 0.30);
+
+  --gf-shadow-sm:   0 1px 2px 0 rgba(0, 0, 0, 0.30);
+  --gf-shadow-md:   0 2px 12px 0 rgba(0, 0, 0, 0.35);
+  --gf-shadow-lg:   0 8px 32px 0 rgba(0, 0, 0, 0.45);
+}
+
+/* =============================================================================
+   Base
+   ========================================================================== */
+
+body {
+  background-color: var(--gf-page);
+  color: var(--gf-ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:lang(ar) {
+  font-family: 'IBM Plex Sans Arabic', 'Noto Sans Arabic', 'Segoe UI', sans-serif;
+  letter-spacing: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+:focus-visible {
+  outline: 2px solid var(--gf-brand);
+  outline-offset: 2px;
+}
+
+/* Selection uses the soft peach so it never looks alien on cream */
+::selection {
+  background: var(--gf-brand-soft);
+  color: var(--gf-ink);
+}
+
+/* =============================================================================
+   Webkit autofill — kill the yellow/blue browser default and inherit the
+   surface color via our theme tokens. The big inset box-shadow is the only
+   reliable way to repaint the autofill background; it must be !important
+   to outrank the user-agent style. transition-delay keeps the styling stable
+   when the user clicks/focuses an autofilled field.
+   ========================================================================== */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px var(--gf-surface) inset !important;
+          box-shadow: 0 0 0 1000px var(--gf-surface) inset !important;
+  -webkit-text-fill-color: var(--gf-ink) !important;
+  caret-color: var(--gf-ink);
+  border-color: var(--gf-border) !important;
+  transition: background-color 99999s ease-in-out 0s;
+}

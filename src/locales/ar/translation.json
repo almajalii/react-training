@@ -1,5 +1,5 @@
 {
-    "welcome": "الرئيسية",
+    "welcome": "مرحباً",
     "welcome_back": "أهلاً بعودتك",
     "sign_in_account": "سجل الدخول إلى حسابك للمتابعة.",
     "go_to_login": "انتقل إلى تسجيل الدخول",
@@ -30,11 +30,6 @@
     "back_to_signin": "العودة إلى تسجيل الدخول",
     "sending": "جاري الإرسال...",
     "send_reset_email": "إرسال رسالة إعادة التعيين",
-    "All fields are required": "جميع الحقول مطلوبة",
-    "Passwords do not match": "كلمات المرور غير متطابقة",
-    "Password too weak. Use 8+ characters with uppercase, number, or symbol": "كلمة المرور ضعيفة. استخدم 8 أحرف على الأقل مع حرف كبير أو رقم أو رمز",
-    "Username must be at least 4 characters": "يجب أن يكون اسم المستخدم 4 أحرف على الأقل",
-    "Invalid email": "البريد الإلكتروني غير صالح",
     "error_fields_required": "جميع الحقول مطلوبة",
     "error_passwords_match": "كلمتا المرور غير متطابقتين",
     "error_password_weak": "كلمة المرور ضعيفة. استخدم 8 أحرف على الأقل مع حرف كبير ورقم أو رمز",

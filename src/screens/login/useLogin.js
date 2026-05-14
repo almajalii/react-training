@@ -1,93 +1,39 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUser, setError } from '../../store/authSlice';
-import { loginWithFirebase, resetPasswordInFirebase } from '../../firebase/authFunctions';
-import { labelClass, inputClass } from '../../styles/formStyle';
+import { apiClient } from '../../api/apiClient';
+import { useFormik } from 'formik';
+import { loginValidationSchema } from './loginValidation';
 import { useTranslation } from 'react-i18next';
 
 export function useLogin() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState(false);
+  const { error } = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+  const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
+  const isRTL = i18n.language === 'ar';
 
-    const [resetEmail, setResetEmail] = useState('');
-    const [resetLoading, setResetLoading] = useState(false);
-    const [resetSuccess, setResetSuccess] = useState(false);
+  // Login Form
+  const loginFormik = useFormik({
+    initialValues: { email: '', password: '' },
+    validationSchema: loginValidationSchema,
+    onSubmit: async (values) => {
+      dispatch(setError(null));
+      try {
+        const response = await apiClient.auth.login(values.email, values.password);
+        dispatch(setUser(response.data.user));
+        navigate('/');
+      } catch (err) {
+        dispatch(setError(err.message || 'Login failed'));
+      }
+    },
+  });
 
-    const [section, setSection] = useState('login');
-
-    const { error } = useSelector(state => state.auth);
-    const dispatch = useDispatch();
-    const { t, i18n } = useTranslation();
-    const isRTL = i18n.language === 'ar';
-
-    useEffect(() => {
-        return () => {
-            dispatch(setError(null));
-        };
-    }, [dispatch]);
-
-
-
-    async function handleSubmit(e) {
-        e.preventDefault();
-        setLoading(true);
-        dispatch(setError(null));
-        try {
-            const userData = await loginWithFirebase(email, password);
-            dispatch(setUser({
-                uid: userData.uid,
-                email: userData.email,
-                username: userData.username,
-                bio: userData.bio,
-            }));
-        } catch (err) {
-            dispatch(setError(err.message));
-        } finally {
-            setLoading(false);
-        }
-    }
-
-    async function handleResetSubmit(e) {
-        e.preventDefault();
-        setResetLoading(true);
-        dispatch(setError(null));
-        setResetSuccess(false);
-        try {
-            await resetPasswordInFirebase(resetEmail);
-            setResetSuccess(true);
-            setResetEmail('');
-        } catch (err) {
-            dispatch(setError(err.message));
-        } finally {
-            setResetLoading(false);
-        }
-    }
-
-    function goToForgotPassword() {
-        setSection('forgot-password');
-        dispatch(setError(null));
-        setResetSuccess(false);
-    }
-
-    function goToLogin() {
-        setSection('login');
-        dispatch(setError(null));
-        setResetSuccess(false);
-    }
-
-    return {
-        // login form
-        email, setEmail,
-        password, setPassword,
-        loading, handleSubmit,
-        // reset form
-        resetEmail, setResetEmail,
-        resetLoading, resetSuccess,
-        handleResetSubmit,
-        // navigation
-        section, goToForgotPassword, goToLogin,
-        // shared
-        error,t,isRTL,labelClass,inputClass
-    };
+  return {
+    loginFormik,
+    error,
+    t,
+    isRTL,
+  };
 }

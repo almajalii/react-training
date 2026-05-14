@@ -9,9 +9,9 @@ export default defineConfig({
   ],
   server: {
     watch: {
-      usePolling: true, // 👈 add this
+      usePolling: true, //Vite detects change
     },
-    hmr: {
+    hmr: {//hot module relode
       protocol: 'ws',
       host: 'localhost',
       port: 5173,
