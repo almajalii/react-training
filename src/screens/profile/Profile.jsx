@@ -3,11 +3,11 @@ import ProfileForm from '../../components/organisms/ProfileForm';
 import { useProfile } from './useProfile';
 
 export default function Profile() {
-  const { formik, error, success, user } = useProfile();
+  const { formik, success, user } = useProfile();
 
   return (
     <AuthLayout>
-      <ProfileForm formik={formik} error={error} success={success} user={user} />
+      <ProfileForm formik={formik} success={success} user={user} />
     </AuthLayout>
   );
 }

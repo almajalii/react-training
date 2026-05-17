@@ -1,10 +1,10 @@
 import * as Yup from 'yup';
 
-export const loginValidationSchema = Yup.object({
+export const loginValidationSchema = (t) => Yup.object({
   email: Yup.string()
-    .email('Invalid email address')
-    .required('Email is required'),
+    .email(t('val_email_invalid'))
+    .required(t('val_email_required')),
   password: Yup.string()
-    .min(8, 'Password must be at least 8 characters')
-    .required('Password is required'),
+    .min(8, t('val_password_min'))
+    .required(t('val_password_required')),
 });

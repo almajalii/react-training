@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import FormField from '../molecules/FormField';
 import { gfx } from '../../styles/themeColors';
 
-export default function LoginForm({ formik, error }) {
+export default function LoginForm({ formik }) {
   const { t } = useTranslation();
 
   return (
@@ -13,12 +13,6 @@ export default function LoginForm({ formik, error }) {
         <h1 className="text-2xl font-extrabold text-ink tracking-tight mb-1">{t('welcome_back')}</h1>
         <p className="text-sm text-muted">{t('sign_in_account')}</p>
       </div>
-
-      {error && (
-        <div className="mb-5 px-4 py-3 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-xl">
-          <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
-        </div>
-      )}
 
       <form onSubmit={formik.handleSubmit}>
         <FormField label={t('email')} name="email" type="email" placeholder="you@example.com"

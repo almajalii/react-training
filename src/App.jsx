@@ -1,14 +1,13 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
+import { clearUser, setAuthChecked } from './store/authSlice';
 import Register from './screens/register/Register';
 import Login from './screens/login/Login';
 import Home from './screens/home/Home';
 import BrowseServices from './screens/browse/BrowseServices';
-import { clearUser, setUser, setAuthChecked } from './store/authSlice';
-import { apiClient } from './api/apiClient';
 import Profile from './screens/profile/Profile';
-
+import ProfessionalProfile from './screens/professionalProfile/ProfessionalProfile';
 function App() {
   const { user, authChecked } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -16,31 +15,13 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem('authToken');
 
+    // No token — clear any stale user data and mark auth as checked
     if (!token) {
       dispatch(clearUser());
-      dispatch(setAuthChecked(true));
-      return;
     }
 
-    if (user) {
-      dispatch(setAuthChecked(true));
-      return;
-    }
-
-    const fetchUser = async () => {
-      try {
-        const userData = await apiClient.profile.get();
-        dispatch(setUser(userData));
-      } catch (err) {
-        console.error('Failed to fetch user:', err);
-        localStorage.removeItem('authToken');
-        dispatch(clearUser());
-      } finally {
-        dispatch(setAuthChecked(true));
-      }
-    };
-    fetchUser();
-  }, [dispatch]); // eslint-disable-line react-hooks/exhaustive-deps
+    dispatch(setAuthChecked(true));
+  }, [dispatch]);
 
   if (!authChecked) {
     return (
@@ -60,6 +41,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/browse" element={<BrowseServices />} />
           <Route path="/browse/:categoryId" element={<BrowseServices />} />
+          <Route path="/pro/:id" element={<ProfessionalProfile />} />
           <Route path="/register" element={user ? <Navigate to="/" replace /> : <Register />} />
           <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
           <Route path="/profile" element={user ? <Profile /> : <Navigate to="/login" replace />} />

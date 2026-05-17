@@ -1,26 +1,26 @@
 import * as Yup from 'yup';
 
-export const registerValidationSchema = Yup.object({
+export const registerValidationSchema = (t) => Yup.object({
   firstName: Yup.string()
-    .min(2, 'First name must be at least 2 characters')
-    .required('First name is required'),
+    .min(2, t('val_firstName_min'))
+    .required(t('val_firstName_required')),
   lastName: Yup.string()
-    .min(2, 'Last name must be at least 2 characters')
-    .required('Last name is required'),
+    .min(2, t('val_lastName_min'))
+    .required(t('val_lastName_required')),
   email: Yup.string()
-    .email('Invalid email address')
-    .required('Email is required'),
+    .email(t('val_email_invalid'))
+    .required(t('val_email_required')),
   phone: Yup.string()
-    .matches(/^[0-9]{7,15}$/, 'Phone must be 7-15 digits')
+    .matches(/^[0-9]{7,15}$/, t('val_phone_invalid'))
     .optional(),
   password: Yup.string()
-    .min(8, 'Password must be at least 8 characters')
+    .min(8, t('val_password_min'))
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/,
-      'Must include uppercase, lowercase, number and special character'
+      t('val_password_weak')
     )
-    .required('Password is required'),
+    .required(t('val_password_required')),
   confirmPassword: Yup.string()
-    .oneOf([Yup.ref('password')], 'Passwords must match')
-    .required('Confirm password is required'),
+    .oneOf([Yup.ref('password')], t('val_confirmPassword_match'))
+    .required(t('val_confirmPassword_required')),
 });

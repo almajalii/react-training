@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
-import { apiClient } from '../../api/apiClient';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import { getProfile, updateEmail, updatePhone, updateDob, updateGender } from '../../network/api';
 import { updateUserData } from '../../store/authSlice';
 import { profileValidationSchema } from './profileValidationSchema';
 
 export function useProfile() {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const user = useSelector((state) => state.auth.user);
-  const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
   const formik = useFormik({
@@ -18,67 +20,57 @@ export function useProfile() {
       dateOfBirth: '',
       gender: '',
     },
-    validationSchema: profileValidationSchema,
+    validationSchema: profileValidationSchema(t),
     onSubmit: async (values) => {
-      setError(null);
       setSuccess(false);
-
       try {
         const updates = [];
 
-        // Only call API for fields that changed
-        if (values.email !== (user?.email || '')) {
-          updates.push(apiClient.profile.updateEmail(values.email));
-        }
-        if (values.phone !== (user?.phone || '')) {
-          updates.push(apiClient.profile.updatePhone(values.phone));
-        }
-        if (values.dateOfBirth !== (user?.dateOfBirth || '')) {
-          updates.push(apiClient.profile.updateDob(values.dateOfBirth));
-        }
-        if (values.gender !== (user?.gender || '')) {
-          updates.push(apiClient.profile.updateGender(values.gender));
-        }
+        if (values.email !== (user?.email || '')) updates.push(updateEmail(values.email));
+        if (values.phone !== (user?.phone || '')) updates.push(updatePhone(values.phone));
+        if (values.dateOfBirth !== (user?.dateOfBirth || '')) updates.push(updateDob(values.dateOfBirth));
+        if (values.gender !== (user?.gender || '')) updates.push(updateGender(values.gender));
 
-        // Execute all updates in parallel
         if (updates.length > 0) {
           await Promise.all(updates);
         }
 
-        // Update Redux store
         dispatch(updateUserData(values));
+        toast.success(t('profile_updated'));
         setSuccess(true);
 
-        // Auto-dismiss success message after 2 seconds
         setTimeout(() => setSuccess(false), 2000);
-      } catch (err) {
-        setError(err.message || 'Error updating profile');
+      } catch {
+        // error toast fired automatically by responseInterceptor
       }
     },
   });
 
-  // Fetch profile data on mount
   useEffect(() => {
+    let cancelled = false;
+
     async function loadProfile() {
       try {
-        const profile = await apiClient.profile.get();
-        formik.setValues({
-          email: profile.email || '',
-          phone: profile.phone || '',
-          dateOfBirth: profile.dateOfBirth || '',
-          gender: profile.gender || '',
-        });
-      } catch (err) {
-        setError('Error loading profile');
+        const res = await getProfile();
+        const profile = res?.data ?? res;
+        if (!cancelled) {
+          formik.resetForm({
+            values: {
+              email: profile.email || '',
+              phone: profile.phone || '',
+              dateOfBirth: profile.dateOfBirth || '',
+              gender: profile.gender || '',
+            },
+          });
+        }
+      } catch {
+        // error toast fired automatically by responseInterceptor
       }
     }
-    if (user) loadProfile();
-  }, [user]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return {
-    formik,
-    error,
-    success,
-    user,
-  };
+    if (user) loadProfile();
+    return () => { cancelled = true; };
+  }, [user]); // formik intentionally omitted — resetForm is stable and won't cause re-renders
+
+  return { formik, success, user };
 }

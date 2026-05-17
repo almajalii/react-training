@@ -3,11 +3,11 @@ import RegisterForm from '../../components/organisms/RegisterForm';
 import { useRegister } from './useRegister';
 
 export default function Register() {
-  const { formik, error } = useRegister();
+  const { formik } = useRegister();
 
   return (
     <AuthLayout>
-      <RegisterForm formik={formik} error={error} />
+      <RegisterForm formik={formik} />
     </AuthLayout>
   );
 }

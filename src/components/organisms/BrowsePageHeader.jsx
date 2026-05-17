@@ -9,7 +9,8 @@ import { findCategoryBySlug } from '../../constants/categories';
 export default function BrowsePageHeader({ categorySlug }) {
   const { t } = useTranslation();
   const activeMeta = findCategoryBySlug(categorySlug);
-
+  //active meta = null  -> all services page
+  //active meta = category -> category page
   const title = activeMeta
     ? t(activeMeta.nameKey)
     : t('browse_all_services');

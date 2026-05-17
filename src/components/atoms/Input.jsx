@@ -1,5 +1,5 @@
 import { inputClass } from '../../styles/formStyle';
-
+import { useMemo } from 'react';
 export default function Input({
   id,
   name,
@@ -8,11 +8,12 @@ export default function Input({
   touched,
   ...props
 }) {
-  const hasError = error && touched;
+  const hasError = useMemo(() => error && touched, [error, touched]);
+  const inputId = useMemo(() => id || name, [id, name]);
 
   return (
     <input
-      id={id || name}
+      id={inputId}
       type={type}
       name={name}
       className={`
