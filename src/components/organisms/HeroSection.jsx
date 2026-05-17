@@ -24,7 +24,7 @@ export default function HeroSection() {
           </div>
 
           {/* Headline */}
-          <h1 className="text-[clamp(2.5rem,4.4vw,3.6rem)] font-extrabold text-ink leading-[1.04] tracking-[-0.035em] mb-5 text-balance">
+          <h1 className="text-[clamp(2.5rem,4.4vw,3.6rem)] font-extrabold text-ink leading-[1.04] tracking-tight2 mb-5 text-balance">
             {t('hero_headline_1')}{' '}
             <span className="relative inline-block">
               <span className="relative z-10">{t('hero_headline_highlight')}</span>

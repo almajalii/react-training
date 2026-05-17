@@ -1,14 +1,13 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setUser, setError } from '../../store/authSlice';
-import { apiClient } from '../../api/apiClient';
 import { useFormik } from 'formik';
-import { registerValidationSchema } from './registerValidation';
 import { useTranslation } from 'react-i18next';
-import { labelClass, inputClass } from '../../styles/formStyle';
+import { toast } from 'react-toastify';
+import { setUser } from '../../store/authSlice';
+import { register } from '../../network/api';
+import { registerValidationSchema } from './registerValidation';
 
 export function useRegister() {
-  const { error } = useSelector(state => state.auth);
   const dispatch = useDispatch();
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
@@ -23,11 +22,10 @@ export function useRegister() {
       password: '',
       confirmPassword: '',
     },
-    validationSchema: registerValidationSchema,
+    validationSchema: registerValidationSchema(t),
     onSubmit: async (values) => {
-      dispatch(setError(null));
       try {
-        const response = await apiClient.auth.register(
+        const response = await register(
           values.firstName,
           values.lastName,
           values.email,
@@ -36,22 +34,14 @@ export function useRegister() {
           values.confirmPassword,
           'customer'
         );
-        
-        // Response structure: { data: { token, user: UserDto } }
         dispatch(setUser(response.data.user));
+        toast.success(t('register_success'));
         navigate('/');
-      } catch (err) {
-        dispatch(setError(err.message || 'Registration failed'));
+      } catch {
+        // error toast fired automatically by responseInterceptor
       }
     },
   });
 
-  return {
-    formik,
-    error,
-    labelClass,
-    inputClass,
-    isRTL,
-    t,
-  };
+  return { formik, isRTL, t };
 }

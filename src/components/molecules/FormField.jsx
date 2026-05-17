@@ -1,5 +1,6 @@
 import Label from '../atoms/Label';
 import Input from '../atoms/Input';
+import { useMemo } from 'react';
 
 export default function FormField({
   label,
@@ -10,10 +11,9 @@ export default function FormField({
   touched,
   ...props
 }) {
-
-  const hasError = error && touched;
-  // Fall back to `name` for the id so the label's htmlFor always matches a real id.
-  const inputId = id || name;
+  //prevent unnecessary re-renders by memoizing the error state and input ID
+  const hasError = useMemo(() => error && touched, [error, touched]);
+  const inputId = useMemo(() => id || name, [id, name]);
 
   return (
     <div className="mb-4">

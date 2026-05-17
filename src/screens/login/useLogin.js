@@ -1,39 +1,32 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { setUser, setError } from '../../store/authSlice';
-import { apiClient } from '../../api/apiClient';
+import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
-import { loginValidationSchema } from './loginValidation';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import { setUser } from '../../store/authSlice';
+import { login } from '../../network/api';
+import { loginValidationSchema } from './loginValidation';
 
 export function useLogin() {
-  const { error } = useSelector(state => state.auth);
   const dispatch = useDispatch();
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const isRTL = i18n.language === 'ar';
 
-  // Login Form
   const loginFormik = useFormik({
     initialValues: { email: '', password: '' },
-    validationSchema: loginValidationSchema,
+    validationSchema: loginValidationSchema(t),
     onSubmit: async (values) => {
-      dispatch(setError(null));
       try {
-        const response = await apiClient.auth.login(values.email, values.password);
+        const response = await login(values.email, values.password);
         dispatch(setUser(response.data.user));
+        toast.success(t('login_success'));
         navigate('/');
-      } catch (err) {
-        dispatch(setError(err.message || 'Login failed'));
+      } catch {
+        // error toast fired automatically by responseInterceptor
       }
     },
   });
 
-  return {
-    loginFormik,
-    error,
-    t,
-    isRTL,
-  };
+  return { loginFormik, t, isRTL };
 }

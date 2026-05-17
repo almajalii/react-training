@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
-import Header from '../../components/organisms/Header';
+import Header from '../../components/organisms/header/Header';
 import HeroSection from '../../components/organisms/HeroSection';
-import CategorySection from '../../components/organisms/CategorySection';
+import CategorySection from '../../components/organisms/categorySection/CategorySection';
 import HowItWorksSection from '../../components/organisms/HowItWorksSection';
 import ProSection from '../../components/organisms/ProSection';
 import WelcomeBanner from '../../components/organisms/WelcomeBanner';

@@ -3,11 +3,11 @@ import LoginForm from '../../components/organisms/LoginForm';
 import { useLogin } from './useLogin';
 
 export default function Login() {
-  const { loginFormik, error } = useLogin();
+  const { loginFormik } = useLogin();
 
   return (
     <AuthLayout>
-      <LoginForm formik={loginFormik} error={error} />
+      <LoginForm formik={loginFormik} />
     </AuthLayout>
   );
 }

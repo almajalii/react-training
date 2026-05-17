@@ -1,18 +1,17 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import Header from '../../components/organisms/Header';
+import Header from '../../components/organisms/header/Header';
 import Footer from '../../components/organisms/Footer';
 import BrowsePageHeader from '../../components/organisms/BrowsePageHeader';
-import BrowseFilters from '../../components/organisms/BrowseFilters';
-import BrowseResults from '../../components/organisms/BrowseResults';
+import BrowseFilters from '../../components/organisms/browseFilters/BrowseFilters';
+import BrowseResults from '../../components/organisms/browseResults/BrowseResults';
 import { useBrowseServices } from './useBrowseServices';
-import { EMPTY_FILTERS } from './browseFilters';
+import { EMPTY_FILTERS } from './browseFiltersConstants';
 
 export default function BrowseServices() {
-  const { categoryId: categorySlug } = useParams();
+  const { categoryId: categorySlug } = useParams();//reads the category slug from the URL
   const [filters, setFilters] = useState(EMPTY_FILTERS);
-
-  const { professionals, loading, error } = useBrowseServices(categorySlug, filters);
+  const { professionals, loading } = useBrowseServices(categorySlug, filters);
 
   return (
     <div className="min-h-screen bg-page">
@@ -28,7 +27,6 @@ export default function BrowseServices() {
         <BrowseResults
           professionals={professionals}
           loading={loading}
-          error={error}
         />
       </div>
 
