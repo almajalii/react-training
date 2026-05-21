@@ -5,19 +5,20 @@ import { HttpMethod } from '../../config/apiConstants';
 
 // id: string — Guid of the professional
 // lat, lon: number — optional, enables distanceKm in response
+// getProfessionals.js — change the guards to also reject undefined strings
 const getProfessional = async (id, lat, lon) => {
-    const params = new URLSearchParams();
-    if (lat != null) params.set('lat', lat);
-    if (lon != null) params.set('lon', lon);
+  const params = new URLSearchParams();
+  if (lat != null && !isNaN(lat)) params.set('lat', lat);
+  if (lon != null && !isNaN(lon)) params.set('lon', lon);
 
-    const query = params.toString() ? `?${params}` : '';
+  const query = params.toString() ? `?${params}` : '';
 
-    return await handleResponse(
-        fetch(`${API_BASE_URL}/professionals/${id}${query}`, {
-            method: HttpMethod.GET,
-            headers: buildHeaders(true),
-        })
-    );
+  return await handleResponse(
+    fetch(`${API_BASE_URL}/professionals/${id}${query}`, {
+      method: HttpMethod.GET,
+      headers: buildHeaders(true),
+    })
+  );
 };
 
 export default getProfessional;

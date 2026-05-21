@@ -3,9 +3,39 @@ import { Droplets, Wind, Lightbulb, MapPin, CheckCircle2, Star } from 'lucide-re
 import { gfx, TONE_CLASSES, AVATAR_TONE } from '../../styles/themeColors';
 
 const FEED_ITEMS = [
-  { id: 1, svcKey: 'hero_feed_item_1_service', areaKey: 'hero_feed_area_aljubaiha', minsAgo: 12, initials: 'AK', name: 'Ahmad K.',  price: 28, Icon: Droplets,  tone: 'sand' },
-  { id: 2, svcKey: 'hero_feed_item_2_service', areaKey: 'hero_feed_area_abdoun',    minsAgo: 34, initials: 'RM', name: 'Rami M.',   price: 45, Icon: Wind,      tone: 'green' },
-  { id: 3, svcKey: 'hero_feed_item_3_service', areaKey: 'hero_feed_area_sweifieh',  minsAgo: 58, initials: 'YH', name: 'Yousef H.', price: 22, Icon: Lightbulb, tone: 'blue' },
+  {
+    id: 1,
+    svcKey: 'hero_feed_item_1_service',
+    areaKey: 'hero_feed_area_aljubaiha',
+    minsAgo: 12,
+    initials: 'AK',
+    name: 'Ahmad K.',
+    price: 28,
+    Icon: Droplets,
+    tone: 'sand',
+  },
+  {
+    id: 2,
+    svcKey: 'hero_feed_item_2_service',
+    areaKey: 'hero_feed_area_abdoun',
+    minsAgo: 34,
+    initials: 'RM',
+    name: 'Rami M.',
+    price: 45,
+    Icon: Wind,
+    tone: 'green',
+  },
+  {
+    id: 3,
+    svcKey: 'hero_feed_item_3_service',
+    areaKey: 'hero_feed_area_sweifieh',
+    minsAgo: 58,
+    initials: 'YH',
+    name: 'Yousef H.',
+    price: 22,
+    Icon: Lightbulb,
+    tone: 'blue',
+  },
 ];
 
 export default function HeroSection() {
@@ -14,7 +44,6 @@ export default function HeroSection() {
   return (
     <section className="bg-page py-16 lg:py-20 px-6">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-16 items-center">
-
         {/* Left */}
         <div>
           {/* Location pill */}
@@ -34,15 +63,12 @@ export default function HeroSection() {
           </h1>
 
           {/* Subtext */}
-          <p className="text-muted text-lg leading-[1.55] max-w-136 mb-8">
-            {t('hero_subtext')}
-          </p>
+          <p className="text-muted text-lg leading-[1.55] max-w-136 mb-8">{t('hero_subtext')}</p>
         </div>
 
         {/* Right — Live feed card */}
         <div className="relative self-center">
           <div className={`${gfx.cardLg} p-5`}>
-
             {/* Head */}
             <div className="flex items-center justify-between pb-3 border-b border-line">
               <div className="inline-flex items-center gap-2 text-[13px] font-bold text-ink tracking-[-0.01em]">
@@ -53,7 +79,8 @@ export default function HeroSection() {
                 {t('hero_feed_live_in_amman')}
               </div>
               <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
-                {t('hero_feed_today')} · {new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}
+                {t('hero_feed_today')} ·{' '}
+                {new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}
               </div>
             </div>
 
@@ -62,8 +89,13 @@ export default function HeroSection() {
               {FEED_ITEMS.map((item) => {
                 const Ico = item.Icon;
                 return (
-                  <li key={item.id} className="flex items-center gap-3.5 px-1.5 py-2.5 rounded-xl hover:bg-page-2 transition-colors">
-                    <div className={`w-11 h-11 rounded-xl grid place-items-center shrink-0 ${TONE_CLASSES[item.tone]}`}>
+                  <li
+                    key={item.id}
+                    className="flex items-center gap-3.5 px-1.5 py-2.5 rounded-xl hover:bg-page-2 transition-colors"
+                  >
+                    <div
+                      className={`w-11 h-11 rounded-xl grid place-items-center shrink-0 ${TONE_CLASSES[item.tone]}`}
+                    >
                       <Ico size={20} strokeWidth={1.75} />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -71,12 +103,16 @@ export default function HeroSection() {
                         {t(item.svcKey)}
                       </p>
                       <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-xs text-muted mt-0.5">
-                        <span className={`inline-flex items-center justify-center w-4.5 h-4.5 rounded-full text-[9px] font-bold ${AVATAR_TONE[item.tone]}`}>
+                        <span
+                          className={`inline-flex items-center justify-center w-4.5 h-4.5 rounded-full text-[9px] font-bold ${AVATAR_TONE[item.tone]}`}
+                        >
                           {item.initials}
                         </span>
                         <span className="font-semibold text-ink-soft">{item.name}</span>
                         <span className="text-faint">·</span>
-                        <span className="inline-flex items-center gap-1"><MapPin size={11} /> {t(item.areaKey)}</span>
+                        <span className="inline-flex items-center gap-1">
+                          <MapPin size={11} /> {t(item.areaKey)}
+                        </span>
                         <span className="text-faint">·</span>
                         <span>{t('hero_feed_mins_ago', { count: item.minsAgo })}</span>
                       </div>
@@ -103,7 +139,6 @@ export default function HeroSection() {
             </div>
           </div>
         </div>
-
       </div>
     </section>
   );

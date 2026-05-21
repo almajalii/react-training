@@ -11,9 +11,7 @@ export default function BrowsePageHeader({ categorySlug }) {
   const activeMeta = findCategoryBySlug(categorySlug);
   //active meta = null  -> all services page
   //active meta = category -> category page
-  const title = activeMeta
-    ? t(activeMeta.nameKey)
-    : t('browse_all_services');
+  const title = activeMeta ? t(activeMeta.nameKey) : t('browse_all_services');
 
   const subtitle = activeMeta
     ? `${t('browse_expert_solutions')} ${t(activeMeta.subKey).toLowerCase()}.`
@@ -30,12 +28,8 @@ export default function BrowsePageHeader({ categorySlug }) {
             </>
           )}
         </nav>
-        <h1 className="text-4xl font-extrabold text-ink tracking-tight mb-3">
-          {title}
-        </h1>
-        <p className="text-muted text-[16px] max-w-lg">
-          {subtitle}
-        </p>
+        <h1 className="text-4xl font-extrabold text-ink tracking-tight mb-3">{title}</h1>
+        <p className="text-muted text-[16px] max-w-lg">{subtitle}</p>
       </div>
     </div>
   );

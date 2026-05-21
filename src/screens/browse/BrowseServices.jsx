@@ -9,7 +9,7 @@ import { useBrowseServices } from './useBrowseServices';
 import { EMPTY_FILTERS } from './browseFiltersConstants';
 
 export default function BrowseServices() {
-  const { categoryId: categorySlug } = useParams();//reads the category slug from the URL
+  const { categoryId: categorySlug } = useParams(); //reads the category slug from the URL
   const [filters, setFilters] = useState(EMPTY_FILTERS);
   const { professionals, loading } = useBrowseServices(categorySlug, filters);
 
@@ -19,15 +19,8 @@ export default function BrowseServices() {
       <BrowsePageHeader categorySlug={categorySlug} />
 
       <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-10">
-        <BrowseFilters
-          categorySlug={categorySlug}
-          filters={filters}
-          onChange={setFilters}
-        />
-        <BrowseResults
-          professionals={professionals}
-          loading={loading}
-        />
+        <BrowseFilters categorySlug={categorySlug} filters={filters} onChange={setFilters} />
+        <BrowseResults professionals={professionals} loading={loading} />
       </div>
 
       <Footer />

@@ -1,10 +1,13 @@
 import { useTheme } from 'next-themes';
+import { useCallback, useMemo } from 'react';
 
 export function useThemeToggle() {
-    const { theme, setTheme } = useTheme();
-    const isDark = theme === 'dark';
+  const { theme, setTheme } = useTheme();
+  const isDark = useMemo(() => theme === 'dark', [theme]);
 
-    const toggle = () => setTheme(isDark ? 'light' : 'dark');
+  const toggle = useCallback(() => {
+    setTheme(isDark ? 'light' : 'dark');
+  }, [isDark, setTheme]);
 
-    return { isDark, toggle };
+  return { isDark, toggle };
 }

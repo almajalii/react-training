@@ -5,12 +5,12 @@ import { HttpMethod } from '../../config/apiConstants';
 
 // reason: string — required by backend (CancelBookingRequest.Reason)
 const cancelBooking = async (id, reason) =>
-    await handleResponse(
-        fetch(`${API_BASE_URL}/bookings/${id}`, {
-            method: HttpMethod.DELETE,
-            headers: buildHeaders(true),
-            body: JSON.stringify({ reason }),
-        })
-    );
+  await handleResponse(
+    fetch(`${API_BASE_URL}/bookings/${id}`, {
+      method: HttpMethod.DELETE,
+      headers: buildHeaders(true),
+      body: JSON.stringify({ reason }),
+    })
+  );
 
 export default cancelBooking;

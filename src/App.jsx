@@ -8,18 +8,17 @@ import Home from './screens/home/Home';
 import BrowseServices from './screens/browse/BrowseServices';
 import Profile from './screens/profile/Profile';
 import ProfessionalProfile from './screens/professionalProfile/ProfessionalProfile';
+
 function App() {
   const { user, authChecked } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
-
     // No token — clear any stale user data and mark auth as checked
     if (!token) {
       dispatch(clearUser());
     }
-
     dispatch(setAuthChecked(true));
   }, [dispatch]);
 

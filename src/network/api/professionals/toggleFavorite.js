@@ -8,11 +8,11 @@ import { HttpMethod } from '../../config/apiConstants';
 // if already favorited → removes it, if not → adds it
 // Auth required
 const toggleFavorite = async (id) =>
-    await handleResponse(
-        fetch(`${API_BASE_URL}/professionals/${id}/favorite`, {
-            method: HttpMethod.POST,
-            headers: buildHeaders(true),
-        })
-    );
+  await handleResponse(
+    fetch(`${API_BASE_URL}/professionals/${id}/favorite`, {
+      method: HttpMethod.POST,
+      headers: buildHeaders(true),
+    })
+  );
 
 export default toggleFavorite;

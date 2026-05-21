@@ -4,7 +4,7 @@ import { Button, Card, CardBody } from '@heroui/react';
 
 function Welcome() {
   const { user, error, t } = useWelcome();
-  
+
   return (
     /*  the background */
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 px-4 py-10 transition-colors duration-300">
@@ -22,9 +22,7 @@ function Welcome() {
 
               {error && (
                 <div className="px-4 py-3 bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-800 rounded-xl">
-                  <p className="text-red-500 dark:text-red-400 text-sm text-center">
-                    {error}
-                  </p>
+                  <p className="text-red-500 dark:text-red-400 text-sm text-center">{error}</p>
                 </div>
               )}
             </div>
@@ -39,9 +37,7 @@ function Welcome() {
 
               {error && (
                 <div className="mb-6 px-4 py-3 bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-800 rounded-xl">
-                  <p className="text-red-500 dark:text-red-400 text-sm text-center">
-                    {error}
-                  </p>
+                  <p className="text-red-500 dark:text-red-400 text-sm text-center">{error}</p>
                 </div>
               )}
 

@@ -10,9 +10,7 @@ export default function ProfileForm({ formik, success, user }) {
     <div className={`${gfx.cardLg} px-8 py-10`}>
       <div className="mb-8">
         <h1 className="text-2xl font-extrabold text-gray-900 dark:text-gray-100 tracking-tight mb-1">
-          {user?.firstName && user?.lastName
-            ? `${user.firstName} ${user.lastName}`
-            : t('profile')}
+          {user?.firstName && user?.lastName ? `${user.firstName} ${user.lastName}` : t('profile')}
         </h1>
         <p className="text-sm text-muted">{t('update_profile_info')}</p>
       </div>
@@ -70,9 +68,10 @@ export default function ProfileForm({ formik, success, user }) {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             className={`w-full px-3 py-2.5 rounded-lg border transition-colors outline-none cursor-pointer
-              ${formik.touched.gender && formik.errors.gender
-                ? 'border-red-500 dark:border-red-400'
-                : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+              ${
+                formik.touched.gender && formik.errors.gender
+                  ? 'border-red-500 dark:border-red-400'
+                  : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
               }
               bg-white dark:bg-gray-800 text-gray-900 dark:text-white
               focus:border-brand dark:focus:border-brand focus:ring-1 focus:ring-brand/20

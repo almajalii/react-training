@@ -14,7 +14,6 @@ export default function HowItWorksSection() {
       <div className="max-w-7xl mx-auto">
         {/* Intentionally dark navy in both themes — it's the brand "spotlight" block */}
         <div className="bg-[#0E1A2B] rounded-3xl px-8 py-16 lg:px-16 lg:py-18">
-
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-12">
             <div>
               <p className="text-xs font-bold uppercase tracking-caps text-brand mb-2">
@@ -35,13 +34,10 @@ export default function HowItWorksSection() {
                 <h3 className="text-[22px] font-bold text-white tracking-[-0.01em] mb-2.5">
                   {step.title}
                 </h3>
-                <p className="text-[15px] text-white/60 leading-[1.55]">
-                  {step.desc}
-                </p>
+                <p className="text-[15px] text-white/60 leading-[1.55]">{step.desc}</p>
               </div>
             ))}
           </div>
-
         </div>
       </div>
     </section>

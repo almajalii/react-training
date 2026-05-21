@@ -16,8 +16,9 @@ export default function ProSection() {
   return (
     <section className="bg-page py-8 px-6 pb-20">
       <div className="max-w-7xl mx-auto">
-        <div className={`${gfx.cardLg} p-10 lg:p-14 grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-12 items-center`}>
-
+        <div
+          className={`${gfx.cardLg} p-10 lg:p-14 grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-12 items-center`}
+        >
           <div>
             <p className="text-xs font-bold uppercase tracking-caps text-brand-strong mb-3">
               {t('pro_label')}
@@ -50,7 +51,10 @@ export default function ProSection() {
 
           <div className="flex flex-col gap-3">
             {BENEFITS.map((b) => (
-              <div key={b.titleKey} className="flex items-start gap-4 bg-chip rounded-2xl px-5 py-4">
+              <div
+                key={b.titleKey}
+                className="flex items-start gap-4 bg-chip rounded-2xl px-5 py-4"
+              >
                 <div className="shrink-0 mt-0.5 text-ink">
                   <CheckCircle2 size={22} strokeWidth={1.8} />
                 </div>
@@ -61,7 +65,6 @@ export default function ProSection() {
               </div>
             ))}
           </div>
-
         </div>
       </div>
     </section>

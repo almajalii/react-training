@@ -8,12 +8,12 @@ import { HttpMethod } from '../../config/apiConstants';
 // Backend upserts — same query just bumps the timestamp, no duplicates created
 // Auth required — only call when user is logged in
 const recordSearch = async (query) =>
-    await handleResponse(
-        fetch(`${API_BASE_URL}/search/recent`, {
-            method: HttpMethod.POST,
-            headers: buildHeaders(true),
-            body: JSON.stringify({ query }),
-        })
-    );
+  await handleResponse(
+    fetch(`${API_BASE_URL}/search/recent`, {
+      method: HttpMethod.POST,
+      headers: buildHeaders(true),
+      body: JSON.stringify({ query }),
+    })
+  );
 
 export default recordSearch;
