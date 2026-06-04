@@ -9,7 +9,7 @@ import {
   ChevronDown,
   Wrench,
 } from 'lucide-react';
-import MenuItem from '../../molecules/MenuItem';
+import MenuItem from '../../molecules/menuItem/MenuItem';
 import { useUserMenuDrawer } from './useUserMenuDrawer';
 
 export default function UserMenuDrawer() {

@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '../../components/organisms/header/Header';
-import Footer from '../../components/organisms/Footer';
-import BrowsePageHeader from '../../components/organisms/BrowsePageHeader';
-import BrowseFilters from '../../components/organisms/browseFilters/BrowseFilters';
-import BrowseResults from '../../components/organisms/browseResults/BrowseResults';
+import Footer from '../../components/organisms/footer/Footer';
+import BrowsePageHeader from '../../components/organisms/Browse/BrowsePageHeader/BrowsePageHeader';
+import BrowseFilters from '../../components/organisms/Browse/browseFilters/BrowseFilters';
+import BrowseResults from '../../components/organisms/Browse/browseResults/BrowseResults';
 import { useBrowseServices } from './useBrowseServices';
 import { EMPTY_FILTERS } from './browseFiltersConstants';
 

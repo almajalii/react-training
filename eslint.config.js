@@ -1,9 +1,9 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import { defineConfig, globalIgnores } from 'eslint/config'
-import prettier from 'eslint-config-prettier'
+import js from '@eslint/js';
+import globals from 'globals';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
+import { defineConfig, globalIgnores } from 'eslint/config';
+import prettier from 'eslint-config-prettier';
 export default defineConfig([
   globalIgnores(['dist', 'node_modules']),
   {
@@ -30,7 +30,7 @@ export default defineConfig([
       'no-console': ['warn', { allow: ['warn', 'error'] }],
 
       // Code quality
-      'eqeqeq': ['error', 'always'],
+      eqeqeq: ['error', 'smart'],
       'no-duplicate-imports': 'error',
       'no-var': 'error',
       'prefer-const': 'warn',
@@ -41,4 +41,4 @@ export default defineConfig([
       'react-hooks/exhaustive-deps': 'warn',
     },
   },
-])
+]);

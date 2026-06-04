@@ -8,7 +8,8 @@ import Home from './screens/home/Home';
 import BrowseServices from './screens/browse/BrowseServices';
 import Profile from './screens/profile/Profile';
 import ProfessionalProfile from './screens/professionalProfile/ProfessionalProfile';
-
+import CreateBooking from './screens/createBooking/CreateBooking';
+import MyAddresses from './screens/myAddresses/MyAddresses';
 function App() {
   const { user, authChecked } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -41,9 +42,17 @@ function App() {
           <Route path="/browse" element={<BrowseServices />} />
           <Route path="/browse/:categoryId" element={<BrowseServices />} />
           <Route path="/pro/:id" element={<ProfessionalProfile />} />
+          <Route
+            path="/book/:id"
+            element={user ? <CreateBooking /> : <Navigate to="/login" replace />}
+          />
           <Route path="/register" element={user ? <Navigate to="/" replace /> : <Register />} />
           <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
           <Route path="/profile" element={user ? <Profile /> : <Navigate to="/login" replace />} />
+          <Route
+            path="/my-addresses"
+            element={user ? <MyAddresses /> : <Navigate to="/login" replace />}
+          />
         </Routes>
       </main>
     </BrowserRouter>

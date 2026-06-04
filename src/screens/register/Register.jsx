@@ -1,5 +1,5 @@
-import AuthLayout from '../../components/organisms/AuthLayout';
-import RegisterForm from '../../components/organisms/RegisterForm';
+import AuthLayout from '../../components/organisms/authLayout/AuthLayout';
+import RegisterForm from '../../components/organisms/forms/RegisterForm';
 import { useRegister } from './useRegister';
 
 export default function Register() {
