@@ -1,6 +1,7 @@
 import { useFormik } from 'formik';
-import { Building2, Home, X } from 'lucide-react';
+import { Building2, Home, X, MapPin, Locate } from 'lucide-react';
 import { Button } from '@heroui/react';
+import { useEffect, useRef, useState } from 'react';
 import FormField from '../../molecules/formField/FormField';
 import FormRow from '../../molecules/formRow/FormRow';
 import { gfx } from '../../../styles/themeColors';
@@ -11,6 +12,133 @@ const TYPE_OPTIONS = [
   { id: ADDRESS_TYPES.APARTMENT, Icon: Building2, labelKey: 'addr_type_apartment' },
   { id: ADDRESS_TYPES.HOUSE, Icon: Home, labelKey: 'addr_type_house' },
 ];
+
+// Default center: Amman, Jordan
+const DEFAULT_CENTER = { lat: 31.9539, lng: 35.9106 };
+
+function MapPicker({ lat, lng, onChange }) {
+  const containerRef = useRef(null);
+  const mapRef = useRef(null);
+  const markerRef = useRef(null);
+  const [locating, setLocating] = useState(false);
+  const [leafletReady, setLeafletReady] = useState(false);
+
+  // Lazy-load Leaflet CSS + JS once
+  useEffect(() => {
+    if (window.L) {
+      setLeafletReady(true);
+      return;
+    }
+
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+    document.head.appendChild(link);
+
+    const script = document.createElement('script');
+    script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+    script.onload = () => setLeafletReady(true);
+    document.head.appendChild(script);
+  }, []);
+
+  // Init map once Leaflet is ready and container is mounted
+  useEffect(() => {
+    if (!leafletReady || !containerRef.current || mapRef.current) return;
+
+    const center = lat && lng ? [lat, lng] : [DEFAULT_CENTER.lat, DEFAULT_CENTER.lng];
+
+    const map = window.L.map(containerRef.current, { zoomControl: true }).setView(center, 15);
+    window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors',
+    }).addTo(map);
+
+    // Custom brand-colored pin icon
+    const icon = window.L.divIcon({
+      className: '',
+      html: `<div style="
+        width:32px;height:32px;background:#ED8936;border:3px solid #fff;
+        border-radius:50% 50% 50% 0;transform:rotate(-45deg);
+        box-shadow:0 2px 8px rgba(0,0,0,0.3);
+      "></div>`,
+      iconSize: [32, 32],
+      iconAnchor: [16, 32],
+    });
+
+    const marker = window.L.marker(center, { icon, draggable: true }).addTo(map);
+
+    marker.on('dragend', (e) => {
+      const { lat: newLat, lng: newLng } = e.target.getLatLng();
+      onChange(newLat, newLng);
+    });
+
+    map.on('click', (e) => {
+      const { lat: newLat, lng: newLng } = e.latlng;
+      marker.setLatLng([newLat, newLng]);
+      onChange(newLat, newLng);
+    });
+
+    mapRef.current = map;
+    markerRef.current = marker;
+  }, [leafletReady]);
+
+  // Keep marker in sync if lat/lng are set externally (e.g. GPS)
+  useEffect(() => {
+    if (!mapRef.current || !markerRef.current || !lat || !lng) return;
+    markerRef.current.setLatLng([lat, lng]);
+    mapRef.current.setView([lat, lng], mapRef.current.getZoom());
+  }, [lat, lng]);
+
+  const handleLocate = () => {
+    if (!navigator.geolocation) return;
+    setLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        onChange(pos.coords.latitude, pos.coords.longitude);
+        setLocating(false);
+      },
+      () => setLocating(false),
+      { timeout: 8000 }
+    );
+  };
+
+  return (
+    <div className="mb-4">
+      <div className="flex items-center justify-between mb-1.5">
+        <label className={gfx.label}>
+          <MapPin className="inline w-3.5 h-3.5 mr-1 -mt-0.5" />
+          Location on map
+          <span className="text-faint font-normal ml-1">(optional)</span>
+        </label>
+        <button
+          type="button"
+          onClick={handleLocate}
+          disabled={locating}
+          className="flex items-center gap-1.5 text-[12px] font-medium text-brand hover:text-brand-strong
+            transition-colors disabled:opacity-50"
+        >
+          <Locate className="w-3.5 h-3.5" />
+          {locating ? 'Locating…' : 'Use my location'}
+        </button>
+      </div>
+
+      <div
+        ref={containerRef}
+        className="w-full rounded-xl overflow-hidden border border-line"
+        style={{ height: 200 }}
+      />
+
+      {lat && lng && (
+        <p className="mt-1.5 text-[12px] text-muted font-mono">
+          {lat.toFixed(6)}, {lng.toFixed(6)}
+        </p>
+      )}
+
+      <p className="mt-1 text-[12px] text-faint">
+        Tap the map or drag the pin to set the exact location.
+      </p>
+    </div>
+  );
+}
 
 export default function AddressFormModal({ mode, address, t, onClose, onSave, isSaving }) {
   const isEdit = mode === 'edit';
@@ -25,10 +153,11 @@ export default function AddressFormModal({ mode, address, t, onClose, onSave, is
       floor: address?.floor || '',
       house: address?.house || '',
       additionalDirections: address?.additionalDirections || '',
+      latitude: address?.latitude ?? null,
+      longitude: address?.longitude ?? null,
     },
     validationSchema: addressValidationSchema(t),
     onSubmit: async (values) => {
-      // Keep only the fields relevant to the chosen type before sending.
       const isApartment = values.type === ADDRESS_TYPES.APARTMENT;
       const payload = {
         type: values.type,
@@ -39,6 +168,8 @@ export default function AddressFormModal({ mode, address, t, onClose, onSave, is
         floor: isApartment ? values.floor.trim() : '',
         house: isApartment ? '' : values.house.trim(),
         additionalDirections: values.additionalDirections.trim(),
+        latitude: values.latitude,
+        longitude: values.longitude,
         ...(isEdit ? { id: address.id, isDefault: address.isDefault } : {}),
       };
       await onSave(payload);
@@ -167,7 +298,7 @@ export default function AddressFormModal({ mode, address, t, onClose, onSave, is
             />
           )}
 
-          <div className="mb-2">
+          <div className="mb-4">
             <label className={gfx.label}>
               {t('addr_directions')}{' '}
               <span className="text-faint font-normal">({t('addr_optional')})</span>
@@ -184,6 +315,16 @@ export default function AddressFormModal({ mode, address, t, onClose, onSave, is
                 outline-none transition-all resize-none"
             />
           </div>
+
+          {/* Map picker */}
+          <MapPicker
+            lat={formik.values.latitude}
+            lng={formik.values.longitude}
+            onChange={(lat, lng) => {
+              formik.setFieldValue('latitude', lat);
+              formik.setFieldValue('longitude', lng);
+            }}
+          />
 
           <div className="flex items-center justify-end gap-3 pt-4">
             <Button

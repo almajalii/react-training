@@ -68,15 +68,6 @@ export default function UserMenuDrawer() {
 
           <div className="py-2 px-2">
             <MenuItem
-              icon={CalendarDays}
-              label={t('nav_my_bookings')}
-              to="/my-bookings"
-              onClick={close}
-            />
-            {user?.isPro && (
-              <MenuItem icon={Wrench} label={t('menu_my_jobs')} to="/my-jobs" onClick={close} />
-            )}
-            <MenuItem
               icon={MapPin}
               label={t('menu_my_addresses')}
               to="/my-addresses"

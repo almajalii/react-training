@@ -1,8 +1,6 @@
-//fixed values for API calls
-//Object.freeze: makes object immutable.
 export const Role = Object.freeze({
   CUSTOMER: 'customer',
-  PRO: 'pro',
+  PRO: 'professional',
 });
 
 export const HttpMethod = Object.freeze({

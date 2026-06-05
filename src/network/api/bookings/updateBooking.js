@@ -3,14 +3,16 @@ import { buildHeaders } from '../../http/requestInterceptor';
 import { handleResponse } from '../../http/responseInterceptor';
 import { HttpMethod } from '../../config/apiConstants';
 
-// description: string — reason for the report
-const reportBooking = async (id, description) =>
+// id: string — Guid of the booking to modify
+// booking: { serviceName, servicePrice, scheduledDate, scheduledTime, address, description }
+// Only allowed when booking status is Pending or Accepted
+const updateBooking = async (id, booking) =>
   await handleResponse(
-    fetch(`${API_BASE_URL}/bookings/${id}/report`, {
-      method: HttpMethod.POST,
+    fetch(`${API_BASE_URL}/bookings/${id}`, {
+      method: HttpMethod.PUT,
       headers: buildHeaders(true),
-      body: JSON.stringify({ description }),
+      body: JSON.stringify(booking),
     })
   );
 
-export default reportBooking;
+export default updateBooking;

@@ -32,6 +32,10 @@ export default function CreateBooking() {
     selectAddress,
     selectedDateLabel,
     navigate,
+    isDayUnavailable,
+    isTimeUnavailable,
+    addImages,
+    removeImage,
   } = useCreateBooking();
 
   const initials = pro ? getInitials(pro.name) : '';
@@ -89,6 +93,8 @@ export default function CreateBooking() {
             form={form}
             set={set}
             selectService={selectService}
+            addImages={addImages}
+            removeImage={removeImage}
             t={t}
             i18n={i18n}
           />
@@ -102,6 +108,8 @@ export default function CreateBooking() {
             selectAddress={selectAddress}
             savedAddresses={savedAddresses}
             dateSlots={dateSlots}
+            isDayUnavailable={isDayUnavailable}
+            isTimeUnavailable={isTimeUnavailable}
             t={t}
           />
         )}

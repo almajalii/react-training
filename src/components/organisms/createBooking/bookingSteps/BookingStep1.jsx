@@ -1,8 +1,27 @@
-import { Image } from 'lucide-react';
+import { useRef } from 'react';
+import { Image, X, Plus } from 'lucide-react';
 import { gfx } from '../../../../styles/themeColors';
 
-export default function BookingStep1({ pro, form, set, selectService, t, i18n }) {
+export default function BookingStep1({
+  pro,
+  form,
+  set,
+  selectService,
+  addImages,
+  removeImage,
+  t,
+  i18n,
+}) {
   const isRTL = i18n.language === 'ar';
+  const fileInputRef = useRef(null);
+
+  const handleFileChange = (e) => {
+    if (e.target.files?.length) {
+      addImages(e.target.files);
+      // Reset input so picking the same file again still fires onChange
+      e.target.value = '';
+    }
+  };
 
   return (
     <>
@@ -66,19 +85,71 @@ export default function BookingStep1({ pro, form, set, selectService, t, i18n })
         )}
       </div>
 
-      {/* Photo upload — UI only, wired in v2 */}
+      {/* Photo upload */}
       <div>
         <label className={gfx.label}>{t('booking_photo_label')}</label>
-        <div
-          className="border-[1.5px] border-dashed border-line rounded-[14px] p-7 text-center
-          bg-surface text-muted cursor-pointer hover:border-brand-soft transition-colors"
-        >
-          <Image size={22} strokeWidth={1.6} className="mx-auto mb-2" />
-          <div className="text-[14px]">
-            {t('booking_photo_hint')}{' '}
-            <span className="font-semibold text-brand">{t('booking_photo_browse')}</span>
+
+        {/* Hidden file input — accepts images, allows multi-select */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          multiple
+          className="hidden"
+          onChange={handleFileChange}
+        />
+
+        {/* Preview strip + add button */}
+        {form.images.length > 0 ? (
+          <div className="flex gap-2.5 flex-wrap">
+            {form.images.map((img, i) => (
+              <div
+                key={img.uri}
+                className="relative w-20 h-20 rounded-xl overflow-hidden border border-line shrink-0"
+              >
+                <img src={img.uri} alt="" className="w-full h-full object-cover" />
+                <button
+                  onClick={() => removeImage(i)}
+                  className="absolute top-1 right-1 w-5 h-5 rounded-full bg-black/60 flex items-center
+                    justify-center text-white transition-opacity hover:bg-black/80"
+                  aria-label="Remove photo"
+                >
+                  <X size={11} strokeWidth={2.5} />
+                </button>
+              </div>
+            ))}
+
+            {/* Add more — only show if under the 5-photo cap */}
+            {form.images.length < 5 && (
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="w-20 h-20 rounded-xl border-[1.5px] border-dashed border-line
+                  bg-surface flex flex-col items-center justify-center gap-1 text-muted
+                  hover:border-brand-soft transition-colors shrink-0"
+                aria-label="Add photo"
+              >
+                <Plus size={18} strokeWidth={1.8} />
+                <span className="text-[11px]">{t('booking_photo_add')}</span>
+              </button>
+            )}
           </div>
-        </div>
+        ) : (
+          /* Empty state — tap the whole zone to open the picker */
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            className="w-full border-[1.5px] border-dashed border-line rounded-[14px] p-7 text-center
+              bg-surface text-muted hover:border-brand-soft transition-colors"
+          >
+            <Image size={22} strokeWidth={1.6} className="mx-auto mb-2" />
+            <div className="text-[14px]">
+              {t('booking_photo_hint')}{' '}
+              <span className="font-semibold text-brand">{t('booking_photo_browse')}</span>
+            </div>
+            <div className="text-[12px] mt-1 text-faint">
+              {t('booking_photo_max') ?? 'Up to 5 photos'}
+            </div>
+          </button>
+        )}
       </div>
     </>
   );

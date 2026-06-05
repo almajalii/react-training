@@ -1,6 +1,5 @@
 import { MapPin } from 'lucide-react';
 import { TIME_SLOTS } from '../../../../constants/times';
-import { gfx } from '../../../../styles/themeColors';
 
 export default function BookingStep2({
   form,
@@ -10,6 +9,8 @@ export default function BookingStep2({
   selectAddress,
   savedAddresses,
   dateSlots,
+  isDayUnavailable,
+  isTimeUnavailable,
   t,
 }) {
   const hasSelectedSavedAddress = savedAddresses.find((a) => a.id === form.addressId);
@@ -29,30 +30,38 @@ export default function BookingStep2({
         <div className="grid grid-cols-7 gap-2">
           {dateSlots.map((d) => {
             const active = form.scheduledDate === d.iso;
+            const unavailable = isDayUnavailable(d);
+
             return (
               <button
                 key={d.iso}
-                onClick={() => selectDate(d)}
+                onClick={() => !unavailable && selectDate(d)}
+                disabled={unavailable}
+                aria-disabled={unavailable}
                 className={`py-3.5 px-1 rounded-[14px] border-[1.5px] text-center transition-all
                   ${
-                    active
-                      ? 'border-brand bg-brand-tint'
-                      : 'border-line bg-surface hover:border-brand-soft'
+                    unavailable
+                      ? 'border-line bg-surface opacity-35 cursor-not-allowed'
+                      : active
+                        ? 'border-brand bg-brand-tint'
+                        : 'border-line bg-surface hover:border-brand-soft'
                   }`}
               >
                 <div
                   className={`text-[11px] font-bold uppercase tracking-wider
-                  ${active ? 'text-brand' : 'text-muted'}`}
+                    ${active && !unavailable ? 'text-brand' : 'text-muted'}`}
                 >
                   {d.label}
                 </div>
                 <div
                   className={`text-[22px] font-extrabold mt-0.5 tracking-tight
-                  ${active ? 'text-brand' : 'text-ink'}`}
+                    ${active && !unavailable ? 'text-brand' : 'text-ink'}`}
                 >
                   {d.num}
                 </div>
-                <div className={`text-[11px] mt-0.5 ${active ? 'text-brand' : 'text-muted'}`}>
+                <div
+                  className={`text-[11px] mt-0.5 ${active && !unavailable ? 'text-brand' : 'text-muted'}`}
+                >
                   {d.month}
                 </div>
               </button>
@@ -66,26 +75,39 @@ export default function BookingStep2({
         <label className="block text-[13px] font-semibold text-ink-soft mb-3">
           {t('booking_time_label')}
         </label>
-        <div className="grid grid-cols-4 gap-2">
-          {TIME_SLOTS.map((slot) => {
-            const active = form.scheduledTime === slot;
-            return (
-              <button
-                key={slot}
-                onClick={() => selectTime(slot)}
-                className={`py-3 rounded-[14px] border-[1.5px] text-[14px] font-mono
-                  font-medium text-center transition-all
-                  ${
-                    active
-                      ? 'border-brand bg-brand-tint text-brand font-semibold'
-                      : 'border-line bg-surface text-ink hover:border-brand-soft'
-                  }`}
-              >
-                {slot}
-              </button>
-            );
-          })}
-        </div>
+
+        {!form.scheduledDate ? (
+          <p className="text-[13.5px] text-muted italic">
+            {t('booking_time_pick_date_first') ?? 'Select a date first'}
+          </p>
+        ) : (
+          <div className="grid grid-cols-4 gap-2">
+            {TIME_SLOTS.map((slot) => {
+              const active = form.scheduledTime === slot;
+              const unavailable = isTimeUnavailable(slot);
+
+              return (
+                <button
+                  key={slot}
+                  onClick={() => !unavailable && selectTime(slot)}
+                  disabled={unavailable}
+                  aria-disabled={unavailable}
+                  className={`py-3 rounded-[14px] border-[1.5px] text-[14px] font-mono
+                    font-medium text-center transition-all
+                    ${
+                      unavailable
+                        ? 'border-line bg-surface text-faint opacity-35 cursor-not-allowed line-through'
+                        : active
+                          ? 'border-brand bg-brand-tint text-brand font-semibold'
+                          : 'border-line bg-surface text-ink hover:border-brand-soft'
+                    }`}
+                >
+                  {slot}
+                </button>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {/* Address */}

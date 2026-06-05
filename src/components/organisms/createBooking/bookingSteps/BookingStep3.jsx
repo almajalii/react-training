@@ -59,12 +59,32 @@ export default function BookingStep3({ pro, form, selectedDateLabel, initials, t
       </div>
 
       {/* Description card */}
-      <div className={`${gfx.card} p-5`}>
+      <div className={`${gfx.card} p-5 mb-4`}>
         <div className="text-[13px] font-semibold text-ink-soft mb-1.5">
           {t('booking_summary_description')}
         </div>
         <p className="text-[14.5px] text-ink-soft leading-relaxed m-0">{form.description || '—'}</p>
       </div>
+
+      {/* Photos — only shown if user attached any */}
+      {form.images.length > 0 && (
+        <div className={`${gfx.card} p-5`}>
+          <div className="text-[13px] font-semibold text-ink-soft mb-3">
+            {t('booking_summary_photos') ?? 'Photos'}
+            <span className="ml-1.5 text-muted font-normal">({form.images.length})</span>
+          </div>
+          <div className="flex gap-2.5 flex-wrap">
+            {form.images.map((img) => (
+              <img
+                key={img.uri}
+                src={img.uri}
+                alt=""
+                className="w-20 h-20 rounded-xl object-cover border border-line"
+              />
+            ))}
+          </div>
+        </div>
+      )}
     </>
   );
 }

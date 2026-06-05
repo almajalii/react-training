@@ -4,3 +4,4 @@ export { default as filterProfessionals } from './filterProfessionals';
 export { default as getProfessionalServiceAreas } from './getProfessionalServiceAreas';
 export { default as getFavorites } from './getFavorites';
 export { default as toggleFavorite } from './toggleFavorite';
+export { default as getBookedSlots } from './getBookedSlots';

@@ -55,7 +55,7 @@ export default function MyAddresses() {
           </div>
           {!isEmpty && !isLoading && (
             <Button
-              onClick={openCreate}
+              onPress={openCreate}
               className={`${gfx.btnPrimary} px-5 h-11 shrink-0 cursor-pointer`}
             >
               <Plus className="w-4 h-4" />
