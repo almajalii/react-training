@@ -1,7 +1,8 @@
-import { useState, useMemo, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
+import { useState, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useParams, useNavigate } from 'react-router-dom';
+import { TIME_SLOTS, DAY_SLOTS, MONTH_SLOTS } from '../../constants/times';
 import {
   getProfessional,
   getAddresses,
@@ -9,7 +10,6 @@ import {
   getBookedSlots,
   uploadBookingImages,
 } from '../../network/api';
-import { TIME_SLOTS, DAY_SLOTS, MONTH_SLOTS } from '../../constants/times';
 
 const FULL_DAY_NAMES = [
   'Sunday',

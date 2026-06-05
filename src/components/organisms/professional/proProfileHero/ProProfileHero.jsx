@@ -1,6 +1,6 @@
+import { Button } from '@heroui/react';
 import { Star, ShieldCheck, BadgeCheck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@heroui/react';
 import { gfx } from '../../../../styles/themeColors';
 
 export default function ProProfileHero({ pro, initials, toneClass, t }) {

@@ -1,7 +1,7 @@
 import AboutSection from './AboutSection';
+import CertificationsSection from './CertificationsSection';
 import ServiceAreasSection from './ServiceAreasSection';
 import WorkingHoursSection from './WorkingHoursSection';
-import CertificationsSection from './CertificationsSection';
 
 export default function ProAboutTab({ pro }) {
   return (

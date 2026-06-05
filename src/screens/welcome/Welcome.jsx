@@ -1,6 +1,6 @@
+import { Button, Card, CardBody } from '@heroui/react';
 import { Link } from 'react-router-dom';
 import { useWelcome } from './useWelcome';
-import { Button, Card, CardBody } from '@heroui/react';
 
 function Welcome() {
   const { user, error, t } = useWelcome();

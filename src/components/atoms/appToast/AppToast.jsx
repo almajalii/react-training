@@ -1,6 +1,6 @@
-import { ToastContainer } from 'react-toastify';
 import { useTheme } from 'next-themes';
 import { useTranslation } from 'react-i18next';
+import { ToastContainer } from 'react-toastify';
 
 export default function AppToast() {
   const { theme } = useTheme();

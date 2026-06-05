@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
-import { setToken } from './tokenHelper';
 import { parseApiError } from '../utils/errorUtils';
+import { setToken } from './tokenHelper';
 //checks for errors, shows toast, throws error. Also unwraps json response.
 //takes the result of fetch which is a promise
 export const handleResponse = async (responsePromise) => {

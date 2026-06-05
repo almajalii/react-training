@@ -1,5 +1,5 @@
-import { useTranslation } from 'react-i18next';
 import { Star } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { STAR_RATINGS } from '../../../../../constants/ratings';
 export default function RatingSummary({ rating, reviewCount, ratingBreakdown }) {
   const { t } = useTranslation();

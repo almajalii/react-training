@@ -1,6 +1,6 @@
-import Label from '../../atoms/label/Label';
-import Input from '../../atoms/input/Input';
 import { useMemo } from 'react';
+import Input from '../../atoms/input/Input';
+import Label from '../../atoms/label/Label';
 
 export default function FormField({ label, name, id, type = 'text', error, touched, ...props }) {
   //prevent unnecessary re-renders by memoizing the error state and input ID

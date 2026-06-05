@@ -1,8 +1,8 @@
 import { API_BASE_URL } from '../../config/apiConfig';
+import { HttpMethod, Role } from '../../config/apiConstants';
 import { buildHeaders } from '../../http/requestInterceptor';
 import { handleResponse } from '../../http/responseInterceptor';
 import { setToken } from '../../http/tokenHelper';
-import { HttpMethod, Role } from '../../config/apiConstants';
 
 const register = async (
   firstName,

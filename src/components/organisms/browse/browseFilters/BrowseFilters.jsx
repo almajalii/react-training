@@ -1,10 +1,10 @@
-import Chip from '../../../atoms/chip/Chip';
-import { gfx } from '../../../../styles/themeColors';
 import {
   RATING_OPTIONS,
   DISTANCE_OPTIONS,
   EXPERIENCE_OPTIONS,
 } from '../../../../screens/browse/browseFiltersConstants';
+import { gfx } from '../../../../styles/themeColors';
+import Chip from '../../../atoms/chip/Chip';
 import { useBrowseFilters } from './useBrowseFilters';
 
 export default function BrowseFilters({ categorySlug, filters, onChange }) {

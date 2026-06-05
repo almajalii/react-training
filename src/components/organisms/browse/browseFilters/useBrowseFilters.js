@@ -1,6 +1,6 @@
 import { useMemo, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { CATEGORIES } from '../../../../constants/categories';
 import { EMPTY_FILTERS } from '../../../../screens/browse/browseFiltersConstants';
 

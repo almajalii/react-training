@@ -1,7 +1,7 @@
-import { useTranslation } from 'react-i18next';
 import { Button } from '@heroui/react';
-import FormField from '../../molecules/formField/FormField';
+import { useTranslation } from 'react-i18next';
 import { gfx } from '../../../styles/themeColors';
+import FormField from '../../molecules/formField/FormField';
 
 export default function ProfileForm({ formik, success, user }) {
   const { t } = useTranslation();

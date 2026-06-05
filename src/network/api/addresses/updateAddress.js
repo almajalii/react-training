@@ -1,7 +1,7 @@
 import { API_BASE_URL } from '../../config/apiConfig';
+import { HttpMethod } from '../../config/apiConstants';
 import { buildHeaders } from '../../http/requestInterceptor';
 import { handleResponse } from '../../http/responseInterceptor';
-import { HttpMethod } from '../../config/apiConstants';
 
 // address shape: { id, type, area, street, buildingName, apartmentNumber, floor, house, additionalDirections, latitude, longitude }
 // id must be included in the body — backend validates ownership before updating

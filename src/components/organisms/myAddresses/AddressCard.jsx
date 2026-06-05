@@ -1,6 +1,6 @@
 import { Building2, Home, MapPin, Check, Sparkles } from 'lucide-react';
-import { gfx } from '../../../styles/themeColors';
 import { ADDRESS_TYPES } from '../../../constants/addressTypes';
+import { gfx } from '../../../styles/themeColors';
 import { formatAddressLine } from '../../../utils/formatAddress';
 
 const TYPE_ICON = {

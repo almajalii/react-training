@@ -1,15 +1,15 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { clearUser, setAuthChecked } from './store/authSlice';
-import Register from './screens/register/Register';
-import Login from './screens/login/Login';
-import Home from './screens/home/Home';
+import { useSelector, useDispatch } from 'react-redux';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import BrowseServices from './screens/browse/BrowseServices';
-import Profile from './screens/profile/Profile';
-import ProfessionalProfile from './screens/professionalProfile/ProfessionalProfile';
 import CreateBooking from './screens/createBooking/CreateBooking';
+import Home from './screens/home/Home';
+import Login from './screens/login/Login';
 import MyAddresses from './screens/myAddresses/MyAddresses';
+import ProfessionalProfile from './screens/professionalProfile/ProfessionalProfile';
+import Profile from './screens/profile/Profile';
+import Register from './screens/register/Register';
+import { clearUser, setAuthChecked } from './store/authSlice';
 function App() {
   const { user, authChecked } = useSelector((state) => state.auth);
   const dispatch = useDispatch();

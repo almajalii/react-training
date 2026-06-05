@@ -1,7 +1,7 @@
 import { API_BASE_URL } from '../../config/apiConfig';
+import { HttpMethod } from '../../config/apiConstants';
 import { buildHeaders } from '../../http/requestInterceptor';
 import { handleResponse } from '../../http/responseInterceptor';
-import { HttpMethod } from '../../config/apiConstants';
 
 // areaId: number — required, integer id from search results (not the name string)
 // categoryId: number — optional, omit to get all pros in that area regardless of category

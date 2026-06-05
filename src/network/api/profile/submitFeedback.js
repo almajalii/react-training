@@ -1,7 +1,7 @@
 import { API_BASE_URL } from '../../config/apiConfig';
+import { HttpMethod } from '../../config/apiConstants';
 import { buildHeaders } from '../../http/requestInterceptor';
 import { handleResponse } from '../../http/responseInterceptor';
-import { HttpMethod } from '../../config/apiConstants';
 
 // rating: number — must be 1-5, validated server-side with [Range(1, 5)]
 // comment: string — required

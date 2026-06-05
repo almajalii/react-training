@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { clearUser } from '../../../store/authSlice';
 import { logout } from '../../../network/api';
+import { clearUser } from '../../../store/authSlice';
 
 export function useUserMenuDrawer() {
   const dispatch = useDispatch();

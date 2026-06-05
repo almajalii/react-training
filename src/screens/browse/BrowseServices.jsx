@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import Header from '../../components/organisms/header/Header';
-import Footer from '../../components/organisms/footer/Footer';
-import BrowsePageHeader from '../../components/organisms/Browse/BrowsePageHeader/BrowsePageHeader';
 import BrowseFilters from '../../components/organisms/Browse/browseFilters/BrowseFilters';
+import BrowsePageHeader from '../../components/organisms/Browse/BrowsePageHeader/BrowsePageHeader';
 import BrowseResults from '../../components/organisms/Browse/browseResults/BrowseResults';
-import { useBrowseServices } from './useBrowseServices';
+import Footer from '../../components/organisms/footer/Footer';
+import Header from '../../components/organisms/header/Header';
 import { EMPTY_FILTERS } from './browseFiltersConstants';
+import { useBrowseServices } from './useBrowseServices';
 
 export default function BrowseServices() {
   const { categoryId: categorySlug } = useParams(); //reads the category slug from the URL

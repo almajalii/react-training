@@ -1,11 +1,11 @@
-import { useState, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
-import { getProfessional } from '../../network/api';
-import { getInitials } from '../../utils/initials';
-import { proAvatarTone } from '../../styles/themeColors';
+import { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
 import { STAR_RATINGS } from '../../constants/ratings';
+import { getProfessional } from '../../network/api';
+import { proAvatarTone } from '../../styles/themeColors';
+import { getInitials } from '../../utils/initials';
 
 export function useProfessionalProfile() {
   const { id } = useParams();

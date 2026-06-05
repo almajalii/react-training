@@ -1,9 +1,9 @@
 import { useMemo, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { getCityById } from '../../../../constants/cities';
 import { proAvatarTone } from '../../../../styles/themeColors';
 import { getInitials } from '../../../../utils/initials';
-import { getCityById } from '../../../../constants/cities';
 //pro-> professional data object
 //index-> index of the card in the list
 export function useProCard(pro, index) {

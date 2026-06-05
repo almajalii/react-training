@@ -1,5 +1,5 @@
-import { useRef } from 'react';
 import { Image, X, Plus } from 'lucide-react';
+import { useRef } from 'react';
 import { gfx } from '../../../../styles/themeColors';
 
 export default function BookingStep1({

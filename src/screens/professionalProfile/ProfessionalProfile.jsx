@@ -1,11 +1,11 @@
-import { useProfessionalProfile } from './useProfessionalProfile';
-import Header from '../../components/organisms/header/Header';
 import Footer from '../../components/organisms/footer/Footer';
+import Header from '../../components/organisms/header/Header';
 import ProProfileHero from '../../components/organisms/professional/proProfileHero/ProProfileHero';
-import ProProfileTabs from '../../components/organisms/professional/proTabs/proProfileTabs/ProProfileTabs';
 import ProAboutTab from '../../components/organisms/professional/proTabs/proAboutTab/ProAboutTab';
-import ProServicesTab from '../../components/organisms/professional/proTabs/proServicesTab/ProServicesTab';
+import ProProfileTabs from '../../components/organisms/professional/proTabs/proProfileTabs/ProProfileTabs';
 import ProReviewsTab from '../../components/organisms/professional/proTabs/proReviewsTab/ProReviewsTab';
+import ProServicesTab from '../../components/organisms/professional/proTabs/proServicesTab/ProServicesTab';
+import { useProfessionalProfile } from './useProfessionalProfile';
 export default function ProfessionalProfile() {
   const { t, i18n, pro, loading, activeTab, setActiveTab, initials, toneClass, ratingBreakdown } =
     useProfessionalProfile();

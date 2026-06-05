@@ -1,8 +1,8 @@
-import { useTranslation } from 'react-i18next';
 import { Button } from '@heroui/react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import FormField from '../../molecules/formField/FormField';
 import { gfx } from '../../../styles/themeColors';
+import FormField from '../../molecules/formField/FormField';
 import FormRow from '../../molecules/formRow/FormRow';
 
 export default function RegisterForm({ formik }) {

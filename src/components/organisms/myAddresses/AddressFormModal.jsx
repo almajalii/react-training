@@ -1,12 +1,12 @@
+import { Button } from '@heroui/react';
 import { useFormik } from 'formik';
 import { Building2, Home, X, MapPin, Locate } from 'lucide-react';
-import { Button } from '@heroui/react';
 import { useEffect, useRef, useState } from 'react';
-import FormField from '../../molecules/formField/FormField';
-import FormRow from '../../molecules/formRow/FormRow';
-import { gfx } from '../../../styles/themeColors';
 import { ADDRESS_TYPES } from '../../../constants/addressTypes';
 import { addressValidationSchema } from '../../../screens/myAddresses/addressValidationSchema';
+import { gfx } from '../../../styles/themeColors';
+import FormField from '../../molecules/formField/FormField';
+import FormRow from '../../molecules/formRow/FormRow';
 
 const TYPE_OPTIONS = [
   { id: ADDRESS_TYPES.APARTMENT, Icon: Building2, labelKey: 'addr_type_apartment' },

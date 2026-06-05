@@ -1,11 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
+import { useSelector, useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import { getProfile, updateEmail, updatePhone, updateDob, updateGender } from '../../network/api';
 import { updateUserData } from '../../store/authSlice';
 import { profileValidationSchema } from './profileValidationSchema';
-import { toast } from 'react-toastify';
 
 export function useProfile() {
   const dispatch = useDispatch();

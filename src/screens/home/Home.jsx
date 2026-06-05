@@ -1,11 +1,11 @@
 import { useSelector } from 'react-redux';
+import Footer from '../../components/organisms/footer/Footer';
 import Header from '../../components/organisms/header/Header';
-import HeroSection from '../../components/organisms/home/heroSection/HeroSection';
 import CategorySection from '../../components/organisms/home/categorySection/CategorySection';
+import HeroSection from '../../components/organisms/home/heroSection/HeroSection';
 import HowItWorksSection from '../../components/organisms/home/howItWorksSection/HowItWorksSection';
 import ProSection from '../../components/organisms/home/proSection/ProSection';
 import WelcomeBanner from '../../components/organisms/home/welcomeBanner/WelcomeBanner';
-import Footer from '../../components/organisms/footer/Footer';
 
 export default function Home() {
   const { user } = useSelector((state) => state.auth);

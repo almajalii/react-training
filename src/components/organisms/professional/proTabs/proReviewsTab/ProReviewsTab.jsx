@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
-import useReviews from './useReviews';
 import RatingSummary from './RatingSummary';
 import ReviewCard from './ReviewCard';
+import useReviews from './useReviews';
 
 export default function ProReviewsTab({ pro, ratingBreakdown }) {
   const { t } = useTranslation();

@@ -1,5 +1,5 @@
-import { useTranslation } from 'react-i18next';
 import { Droplets, Wind, Lightbulb, MapPin, CheckCircle2, Star } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { gfx, TONE_CLASSES, AVATAR_TONE } from '../../../../styles/themeColors';
 
 const FEED_ITEMS = [

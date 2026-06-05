@@ -1,7 +1,7 @@
-import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
 import { Button } from '@heroui/react';
 import { CheckCircle2, ArrowRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import { gfx } from '../../../../styles/themeColors';
 
 const BENEFITS = [

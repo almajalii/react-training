@@ -1,7 +1,7 @@
 import { useMemo, useCallback } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
 export function useHeader() {
   const { t } = useTranslation();

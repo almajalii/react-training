@@ -1,14 +1,14 @@
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import Header from '../../components/organisms/header/Header';
-import Footer from '../../components/organisms/footer/Footer';
 import BookingProgress from '../../components/organisms/createBooking/bookingProgess/BookingProgress';
 import BookingStep1 from '../../components/organisms/createBooking/bookingSteps/BookingStep1';
 import BookingStep2 from '../../components/organisms/createBooking/bookingSteps/BookingStep2';
 import BookingStep3 from '../../components/organisms/createBooking/bookingSteps/BookingStep3';
 import BookingSuccess from '../../components/organisms/createBooking/bookingSteps/BookingSuccess';
-import useCreateBooking from './useCreateBooking';
+import Footer from '../../components/organisms/footer/Footer';
+import Header from '../../components/organisms/header/Header';
 import { gfx, proAvatarTone } from '../../styles/themeColors';
 import { getInitials } from '../../utils/initials';
+import useCreateBooking from './useCreateBooking';
 
 export default function CreateBooking() {
   const {

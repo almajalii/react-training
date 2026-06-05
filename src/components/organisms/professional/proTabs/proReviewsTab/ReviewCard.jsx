@@ -1,7 +1,7 @@
-import { useMemo } from 'react';
 import { Star } from 'lucide-react';
-import { getInitials } from '../../../../../utils/initials';
+import { useMemo } from 'react';
 import { proAvatarTone } from '../../../../../styles/themeColors';
+import { getInitials } from '../../../../../utils/initials';
 import timeAgo from '../../../../../utils/timeAgo';
 
 export default function ReviewCard({ review, index = 0 }) {

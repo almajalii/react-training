@@ -1,7 +1,7 @@
 import { API_BASE_URL } from '../../config/apiConfig';
+import { HttpMethod } from '../../config/apiConstants';
 import { buildHeaders } from '../../http/requestInterceptor';
 import { handleResponse } from '../../http/responseInterceptor';
-import { HttpMethod } from '../../config/apiConstants';
 
 // name: string — send full name as one string e.g. "John Doe"
 // Backend splits on first space into firstName / lastName

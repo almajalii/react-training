@@ -1,16 +1,16 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
-import App from './App.jsx';
 import { Provider } from 'react-redux';
-import { store, persistor } from './store/store.js';
 import { PersistGate } from 'redux-persist/integration/react';
+import App from './App.jsx';
+import AppToast from './components/atoms/appToast/AppToast.jsx';
+import i18n from './locales/i18n.js';
+import { store, persistor } from './store/store.js';
 import { ThemeProvider } from 'next-themes';
 import { HeroUIProvider } from '@heroui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import AppToast from './components/atoms/appToast/AppToast.jsx';
 import 'react-toastify/dist/ReactToastify.css';
-import i18n from './locales/i18n.js';
 
 const queryClient = new QueryClient({
   defaultOptions: {

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import TabBar from '../../../../molecules/tabBar/TabBar';
 import { buildProTabs } from '../../../../../screens/professionalProfile/proProfileConstants';
+import TabBar from '../../../../molecules/tabBar/TabBar';
 
 export default function ProProfileTabs({ activeTab, setActiveTab }) {
   const { t, i18n } = useTranslation();
