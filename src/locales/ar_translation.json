@@ -252,6 +252,7 @@
   "booking_photo_browse": "تصفح الملفات",
   "booking_date_label": "اختر التاريخ",
   "booking_time_label": "اختر الوقت",
+  "booking_time_pick_date_first": "اختر تاريخاً أولاً لعرض الأوقات المتاحة",
   "booking_address_label": "اختر العنوان",
   "booking_address_or_type": "أو اكتب العنوان يدوياً",
   "booking_address_type": "أدخل عنوانك",
@@ -329,5 +330,68 @@
   "addr_val_type_invalid": "نوع عنوان غير صالح",
   "addr_val_area_required": "المنطقة مطلوبة",
   "addr_val_street_required": "الشارع مطلوب",
-  "addr_val_apartment_required": "رقم الشقة مطلوب"
+  "addr_val_apartment_required": "رقم الشقة مطلوب",
+  "addr_val_apartment_numbers_only": "رقم الشقة يجب أن يحتوي فقط على أرقام",
+  "addr_val_floor_numbers_only": "رقم الطابق يجب أن يحتوي فقط على أرقام",
+  "bk_page_title": "حجوزاتي",
+  "bk_page_subtitle": "تابع جميع حجزاتك القادمة والسابقة في مكان واحد.",
+  "bk_tab_upcoming": "القادمة",
+  "bk_tab_past": "السابقة",
+
+  "bk_empty_upcoming_title": "لا توجد حجوزات قادمة",
+  "bk_empty_upcoming_body": "تصفح الخدمات واحجز محترفاً عندما تكون مستعداً.",
+  "bk_empty_past_title": "لا توجد حجوزات سابقة بعد",
+  "bk_empty_past_body": "ستظهر هنا حجوزاتك المكتملة والملغاة.",
+
+  "bk_card_with": "مع",
+
+  "bk_status_pending": "قيد الانتظار",
+  "bk_status_accepted": "مؤكّد",
+  "bk_status_on_the_way": "في الطريق",
+  "bk_status_arrived": "وصل",
+  "bk_status_in_progress": "جارٍ التنفيذ",
+  "bk_status_completed": "مكتمل",
+  "bk_status_cancelled": "ملغى",
+  "bk_status_declined": "مرفوض",
+
+  "bk_drawer_label": "تفاصيل الحجز",
+  "bk_drawer_close": "إغلاق",
+
+  "bk_detail_date": "التاريخ",
+  "bk_detail_time": "الوقت",
+  "bk_detail_address": "العنوان",
+  "bk_detail_total": "الإجمالي",
+  "bk_detail_notes": "ملاحظات العمل",
+  "bk_detail_photos": "الصور",
+
+  "bk_timeline_title": "مسار الحجز",
+  "bk_tl_placed": "تم تقديم الحجز",
+  "bk_tl_confirmed": "تأكيد المحترف",
+  "bk_tl_on_the_way": "المحترف في الطريق",
+  "bk_tl_arrived": "المحترف وصل",
+  "bk_tl_in_progress": "العمل جارٍ",
+  "bk_tl_completed": "مكتمل",
+
+  "bk_message_btn": "مراسلة",
+
+  "bk_action_reschedule": "إعادة الجدولة",
+  "bk_action_cancel": "إلغاء الحجز",
+  "bk_action_review": "اترك تقييماً",
+  "bk_action_book_again": "احجز مجدداً",
+
+  "bk_reschedule_title": "إعادة الجدولة",
+  "bk_reschedule_pick_day": "اختر يوماً",
+  "bk_reschedule_pick_time": "اختر وقتاً",
+  "bk_reschedule_confirm": "تأكيد الموعد الجديد",
+
+  "bk_cancel_title": "إلغاء هذا الحجز؟",
+  "bk_cancel_body": "سيتم إلغاء خدمة {{service}} مع {{name}}. الإلغاء مجاني قبل 24 ساعة من الموعد.",
+  "bk_cancel_confirm": "نعم، إلغاء",
+  "bk_cancel_keep": "الإبقاء على الحجز",
+
+  "bk_toast_cancelled": "تم إلغاء الحجز",
+  "bk_toast_cancel_error": "تعذّر إلغاء الحجز. يرجى المحاولة مرة أخرى.",
+  "bk_toast_rescheduled": "تمت إعادة الجدولة إلى {{date}}، {{time}}",
+  "bk_toast_reschedule_error": "تعذّرت إعادة الجدولة. يرجى المحاولة مرة أخرى."
+
 }

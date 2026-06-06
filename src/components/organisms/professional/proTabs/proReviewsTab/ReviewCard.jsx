@@ -1,15 +1,16 @@
 import { Star } from 'lucide-react';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { proAvatarTone } from '../../../../../styles/themeColors';
 import { getInitials } from '../../../../../utils/initials';
 import timeAgo from '../../../../../utils/timeAgo';
 
 export default function ReviewCard({ review, index = 0 }) {
   const { reviewerName, reviewerImageUrl, rating, comment, createdAt } = review;
-
+  const { i18n } = useTranslation();
   const initials = useMemo(() => getInitials(reviewerName), [reviewerName]);
   const toneClass = useMemo(() => proAvatarTone(index), [index]);
-  const ago = useMemo(() => timeAgo(createdAt), [createdAt]);
+  const ago = useMemo(() => timeAgo(createdAt, i18n.language), [createdAt, i18n.language]);
 
   return (
     <div className="flex flex-col gap-3 py-5 border-b border-line last:border-none">
@@ -36,11 +37,7 @@ export default function ReviewCard({ review, index = 0 }) {
         {/* Stars */}
         <div className="flex gap-0.5 shrink-0 mt-0.5">
           {[1, 2, 3, 4, 5].map((s) => (
-            <Star
-              key={s}
-              size={13}
-              className={s <= rating ? 'text-brand fill-brand' : 'text-line'}
-            />
+            <Star key={s} size={13} className={s <= rating ? 'text-brand fill-brand' : 'text-line'} />
           ))}
         </div>
       </div>

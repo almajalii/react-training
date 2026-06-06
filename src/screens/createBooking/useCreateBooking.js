@@ -2,35 +2,23 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { useState, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate } from 'react-router-dom';
-import { TIME_SLOTS, DAY_SLOTS, MONTH_SLOTS } from '../../constants/times';
-import {
-  getProfessional,
-  getAddresses,
-  createBooking,
-  getBookedSlots,
-  uploadBookingImages,
-} from '../../network/api';
+import { TIME_SLOTS, DAY_SLOTS, DAY_SLOTS_AR, MONTH_SLOTS, MONTH_SLOTS_AR } from '../../constants/times';
+import { getProfessional, getAddresses, createBooking, getBookedSlots, uploadBookingImages } from '../../network/api';
 
-const FULL_DAY_NAMES = [
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-];
+const FULL_DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-function buildDateSlots() {
+function buildDateSlots(isAr) {
   const days = [];
   for (let i = 0; i < 7; i++) {
     const d = new Date();
     d.setDate(d.getDate() + i);
+    const dayIndex = d.getDay();
+    const monIndex = d.getMonth();
     days.push({
-      label: DAY_SLOTS[d.getDay()],
-      fullDay: FULL_DAY_NAMES[d.getDay()],
+      label: isAr ? DAY_SLOTS_AR[dayIndex] : DAY_SLOTS[dayIndex],
+      fullDay: FULL_DAY_NAMES[dayIndex],
       num: d.getDate(),
-      month: MONTH_SLOTS[d.getMonth()],
+      month: isAr ? MONTH_SLOTS_AR[monIndex] : MONTH_SLOTS[monIndex],
       iso: d.toISOString().split('T')[0],
     });
   }
@@ -43,7 +31,6 @@ function toMinutes(timeStr) {
   if (!timeStr) return null;
   const s = timeStr.trim();
 
-  // 12-hour: "8:00 AM", "8:00 PM", "12:00 PM" etc.
   const match12 = s.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
   if (match12) {
     let h = parseInt(match12[1], 10);
@@ -54,7 +41,6 @@ function toMinutes(timeStr) {
     return h * 60 + m;
   }
 
-  // 24-hour: "08:00", "17:30"
   const match24 = s.match(/^(\d{1,2}):(\d{2})$/);
   if (match24) {
     return parseInt(match24[1], 10) * 60 + parseInt(match24[2], 10);
@@ -67,7 +53,7 @@ function isWithinWorkingHours(timeSlot, openTime, closeTime) {
   const slot = toMinutes(timeSlot);
   const open = toMinutes(openTime);
   const close = toMinutes(closeTime);
-  if (slot == null || open == null || close == null) return true; // can't determine — don't block
+  if (slot == null || open == null || close == null) return true;
   return slot >= open && slot <= close;
 }
 
@@ -75,6 +61,7 @@ export default function useCreateBooking() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
+  const isAr = i18n.language === 'ar';
 
   const [step, setStep] = useState(1);
   const [form, setForm] = useState({
@@ -91,9 +78,10 @@ export default function useCreateBooking() {
 
   const set = (k, v) => setForm((f) => ({ ...f, ...(typeof k === 'object' ? k : { [k]: v }) }));
 
-  const dateSlots = useMemo(() => buildDateSlots(), []);
+  // Re-build date slots whenever language changes so labels switch to Arabic
+  const dateSlots = useMemo(() => buildDateSlots(isAr), [isAr]);
 
-  // ── Remote data ──────────────────────────────────────────────────────────
+  // ── Remote data ────────────────────────────────────────────────────────────
 
   const { data: pro, isLoading: proLoading } = useQuery({
     queryKey: ['professional', id],
@@ -111,7 +99,7 @@ export default function useCreateBooking() {
     enabled: !!form.scheduledDate,
   });
 
-  // ── Availability helpers ──────────────────────────────────────────────────
+  // ── Availability helpers ───────────────────────────────────────────────────
 
   const workingDayNames = useMemo(() => {
     if (!pro?.workingHours?.length) return null;
@@ -128,7 +116,7 @@ export default function useCreateBooking() {
       if (!workingDayNames) return false;
       return !workingDayNames.has(slot.fullDay);
     },
-    [workingDayNames]
+    [workingDayNames],
   );
 
   const isTimeUnavailable = useCallback(
@@ -143,10 +131,10 @@ export default function useCreateBooking() {
       }
       return false;
     },
-    [bookedSlots, form.scheduledDate, workingDayNames, workingHoursMap, dateSlots]
+    [bookedSlots, form.scheduledDate, workingDayNames, workingHoursMap, dateSlots],
   );
 
-  // ── Image handling ────────────────────────────────────────────────────────
+  // ── Image handling ─────────────────────────────────────────────────────────
 
   const addImages = useCallback((files) => {
     const incoming = Array.from(files)
@@ -167,14 +155,11 @@ export default function useCreateBooking() {
     });
   }, []);
 
-  // ── Booking submission ────────────────────────────────────────────────────
+  // ── Booking submission ─────────────────────────────────────────────────────
 
   const { mutate: submitBooking, isPending: submitting } = useMutation({
     mutationFn: async () => {
-      // Upload images first to get real Azure URLs, then include them in the booking
-      const imageUrls = form.images.length
-        ? await uploadBookingImages(form.images.map((img) => img.file))
-        : [];
+      const imageUrls = form.images.length ? await uploadBookingImages(form.images.map((img) => img.file)) : [];
 
       return createBooking({
         professionalId: id,
@@ -191,14 +176,12 @@ export default function useCreateBooking() {
     onSuccess: () => setStep(4),
   });
 
-  // ── Step gate logic ───────────────────────────────────────────────────────
+  // ── Step gate logic ────────────────────────────────────────────────────────
 
   const canProceedStep1 = form.serviceName.length > 0 && form.description.trim().length > 5;
 
   const canProceedStep2 =
-    form.scheduledDate.length > 0 &&
-    form.scheduledTime.length > 0 &&
-    form.address.trim().length > 2;
+    form.scheduledDate.length > 0 && form.scheduledTime.length > 0 && form.address.trim().length > 2;
 
   const handleContinue = () => {
     if (step === 1 && !canProceedStep1) return;
@@ -210,14 +193,14 @@ export default function useCreateBooking() {
     setStep((s) => s + 1);
   };
 
-  // ── Selection helpers ─────────────────────────────────────────────────────
+  // ── Selection helpers ──────────────────────────────────────────────────────
 
   const selectService = (svc) => {
     const priceStr =
       svc.minPrice != null && svc.maxPrice != null
         ? `${svc.minPrice} – ${svc.maxPrice} JD`
         : svc.minPrice != null
-          ? `From ${svc.minPrice} JD`
+          ? `${t('browse_from')} ${svc.minPrice} JD`
           : t('pro_tbd');
     set({ serviceName: svc.name, serviceNameAr: svc.nameAr || '', servicePrice: priceStr });
   };

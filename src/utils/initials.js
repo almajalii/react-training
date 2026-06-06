@@ -1,10 +1,3 @@
-/**
- * Get up to 2 uppercase initials from a full name.
- *   getInitials('Yousef Hassan')     -> 'YH'
- *   getInitials('Madonna')           -> 'M'
- *   getInitials('')                  -> '??'
- *   getInitials(null)                -> '??'
- */
 export function getInitials(name, fallback = '??') {
   if (!name || typeof name !== 'string') return fallback;
   const initials = name

@@ -1,14 +1,13 @@
-// Address types — must match the backend contract.
-// The API expects `type` as a plain string: "apartment" | "house".
-// (See src/network/api/addresses/createAddress.js)
+import { Building2, Home } from 'lucide-react';
+
+// The API expects : "apartment" | "house".
 export const ADDRESS_TYPES = Object.freeze({
   APARTMENT: 'apartment',
   HOUSE: 'house',
 });
 
-// UI metadata for the type picker. `icon` is a lucide-react component name
-// resolved in the form; labelKey / descKey are i18n keys.
+// The options for the address type dropdown, with icons and label keys for localization.
 export const ADDRESS_TYPE_OPTIONS = [
-  { id: ADDRESS_TYPES.APARTMENT, icon: 'Building2', labelKey: 'addr_type_apartment' },
-  { id: ADDRESS_TYPES.HOUSE, icon: 'Home', labelKey: 'addr_type_house' },
+  { id: ADDRESS_TYPES.APARTMENT, Icon: Building2, labelKey: 'addr_type_apartment' },
+  { id: ADDRESS_TYPES.HOUSE, Icon: Home, labelKey: 'addr_type_house' },
 ];

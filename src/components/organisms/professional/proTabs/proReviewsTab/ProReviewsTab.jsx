@@ -9,16 +9,10 @@ export default function ProReviewsTab({ pro, ratingBreakdown }) {
 
   return (
     <div>
-      <h2 className="text-[22px] font-bold text-ink tracking-tight mb-4">
-        {t('pro_customer_reviews')}
-      </h2>
-
-      <RatingSummary
-        rating={pro.rating}
-        reviewCount={pro.reviewCount}
-        ratingBreakdown={ratingBreakdown}
-      />
-
+      <h2 className="text-[22px] font-bold text-ink tracking-tight mb-4">{t('pro_customer_reviews')}</h2>
+      {/*  fetched beforehand in parent component */}
+      <RatingSummary rating={pro.rating} reviewCount={pro.reviewCount} ratingBreakdown={ratingBreakdown} />
+      {/* Reviews list */}
       <div className="mt-6">
         {isLoading ? (
           /* loading state */

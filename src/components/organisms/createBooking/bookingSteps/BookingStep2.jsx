@@ -12,21 +12,18 @@ export default function BookingStep2({
   isDayUnavailable,
   isTimeUnavailable,
   t,
+  i18n,
 }) {
   const hasSelectedSavedAddress = savedAddresses.find((a) => a.id === form.addressId);
 
   return (
     <>
-      <h2 className="text-[22px] font-bold text-ink tracking-tight mb-1">
-        {t('booking_step2_title')}
-      </h2>
+      <h2 className="text-[22px] font-bold text-ink tracking-tight mb-1">{t('booking_step2_title')}</h2>
       <p className="text-muted text-[14.5px] mb-6">{t('booking_step2_subtitle')}</p>
 
       {/* Date picker */}
       <div className="mb-7">
-        <label className="block text-[13px] font-semibold text-ink-soft mb-3">
-          {t('booking_date_label')}
-        </label>
+        <label className="block text-[13px] font-semibold text-ink-soft mb-3">{t('booking_date_label')}</label>
         <div className="grid grid-cols-7 gap-2">
           {dateSlots.map((d) => {
             const active = form.scheduledDate === d.iso;
@@ -59,9 +56,7 @@ export default function BookingStep2({
                 >
                   {d.num}
                 </div>
-                <div
-                  className={`text-[11px] mt-0.5 ${active && !unavailable ? 'text-brand' : 'text-muted'}`}
-                >
+                <div className={`text-[11px] mt-0.5 ${active && !unavailable ? 'text-brand' : 'text-muted'}`}>
                   {d.month}
                 </div>
               </button>
@@ -72,14 +67,10 @@ export default function BookingStep2({
 
       {/* Time picker */}
       <div className="mb-7">
-        <label className="block text-[13px] font-semibold text-ink-soft mb-3">
-          {t('booking_time_label')}
-        </label>
+        <label className="block text-[13px] font-semibold text-ink-soft mb-3">{t('booking_time_label')}</label>
 
         {!form.scheduledDate ? (
-          <p className="text-[13.5px] text-muted italic">
-            {t('booking_time_pick_date_first') ?? 'Select a date first'}
-          </p>
+          <p className="text-[13.5px] text-muted italic">{t('booking_time_pick_date_first')}</p>
         ) : (
           <div className="grid grid-cols-4 gap-2">
             {TIME_SLOTS.map((slot) => {
@@ -112,11 +103,8 @@ export default function BookingStep2({
 
       {/* Address */}
       <div>
-        <label className="block text-[13px] font-semibold text-ink-soft mb-3">
-          {t('booking_address_label')}
-        </label>
+        <label className="block text-[13px] font-semibold text-ink-soft mb-3">{t('booking_address_label')}</label>
 
-        {/* Saved address cards */}
         {savedAddresses.length > 0 && (
           <div className="flex flex-col gap-2.5 mb-3">
             {savedAddresses.map((addr) => {
@@ -135,11 +123,7 @@ export default function BookingStep2({
                   onClick={() => selectAddress(addr)}
                   className={`flex gap-3.5 items-start px-5 py-4 rounded-[14px] border-[1.5px]
                     cursor-pointer transition-all
-                    ${
-                      active
-                        ? 'border-brand bg-brand-tint'
-                        : 'border-line bg-surface hover:border-brand-soft'
-                    }`}
+                    ${active ? 'border-brand bg-brand-tint' : 'border-line bg-surface hover:border-brand-soft'}`}
                 >
                   <MapPin size={20} className="shrink-0 mt-0.5 text-brand" />
                   <div className="flex-1">
@@ -152,7 +136,6 @@ export default function BookingStep2({
           </div>
         )}
 
-        {/* Free-text fallback */}
         <div>
           <label className="block text-[12px] font-medium text-muted mb-1.5">
             {savedAddresses.length > 0 ? t('booking_address_or_type') : t('booking_address_type')}

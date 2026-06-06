@@ -1,5 +1,5 @@
 import { gfx } from '../../../../styles/themeColors';
-
+import ProAvatar from '../../../atoms/proAvatar/ProAvatar';
 export default function BookingStep3({ pro, form, selectedDateLabel, initials, toneClass, t }) {
   const rows = [
     { label: t('booking_summary_service'), value: form.serviceName },
@@ -11,28 +11,15 @@ export default function BookingStep3({ pro, form, selectedDateLabel, initials, t
 
   return (
     <>
-      <h2 className="text-[22px] font-bold text-ink tracking-tight mb-1">
-        {t('booking_step3_title')}
-      </h2>
+      <h2 className="text-[22px] font-bold text-ink tracking-tight mb-1">{t('booking_step3_title')}</h2>
       <p className="text-muted text-[14.5px] mb-6">{t('booking_step3_subtitle')}</p>
 
       {/* Pro + summary card */}
       <div className={`${gfx.card} p-7 mb-4`}>
         {/* Pro header */}
         <div className="flex items-center gap-3.5 pb-4 border-b border-line mb-2">
-          <div
-            className={`w-12 h-12 rounded-full grid place-items-center font-bold text-base ${toneClass}`}
-          >
-            {pro.profileImageUrl ? (
-              <img
-                src={pro.profileImageUrl}
-                alt={initials}
-                className="w-full h-full object-cover rounded-full"
-              />
-            ) : (
-              initials
-            )}
-          </div>
+          <ProAvatar name={pro.name} imageUrl={pro.profileImageUrl} index={0} size="md" />
+
           <div>
             <div className="font-bold text-[16px] text-ink">{pro.name}</div>
             <div className="text-[13px] text-muted">{pro.category}</div>
@@ -41,10 +28,7 @@ export default function BookingStep3({ pro, form, selectedDateLabel, initials, t
 
         {/* Summary rows */}
         {rows.map(({ label, value, mono, price }) => (
-          <div
-            key={label}
-            className="flex justify-between py-3 border-b border-line last:border-0 text-[14.5px]"
-          >
+          <div key={label} className="flex justify-between py-3 border-b border-line last:border-0 text-[14.5px]">
             <span className="text-muted">{label}</span>
             <span
               className={`font-semibold text-ink
@@ -60,9 +44,7 @@ export default function BookingStep3({ pro, form, selectedDateLabel, initials, t
 
       {/* Description card */}
       <div className={`${gfx.card} p-5 mb-4`}>
-        <div className="text-[13px] font-semibold text-ink-soft mb-1.5">
-          {t('booking_summary_description')}
-        </div>
+        <div className="text-[13px] font-semibold text-ink-soft mb-1.5">{t('booking_summary_description')}</div>
         <p className="text-[14.5px] text-ink-soft leading-relaxed m-0">{form.description || '—'}</p>
       </div>
 

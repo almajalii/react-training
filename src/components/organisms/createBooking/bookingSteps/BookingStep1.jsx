@@ -1,36 +1,26 @@
 import { Image, X, Plus } from 'lucide-react';
 import { useRef } from 'react';
 import { gfx } from '../../../../styles/themeColors';
-
-export default function BookingStep1({
-  pro,
-  form,
-  set,
-  selectService,
-  addImages,
-  removeImage,
-  t,
-  i18n,
-}) {
-  const isRTL = i18n.language === 'ar';
+import { useMemo, useCallback } from 'react';
+export default function BookingStep1({ pro, form, set, selectService, addImages, removeImage, t, i18n }) {
+  const isRTL = useMemo(() => i18n.language === 'ar', [i18n.language]);
   const fileInputRef = useRef(null);
 
-  const handleFileChange = (e) => {
-    if (e.target.files?.length) {
-      addImages(e.target.files);
-      // Reset input so picking the same file again still fires onChange
-      e.target.value = '';
-    }
-  };
+  const handleFileChange = useCallback(
+    (e) => {
+      if (e.target.files?.length) {
+        addImages(e.target.files);
+        // Reset input so picking the same file again still fires onChange
+        e.target.value = '';
+      }
+    },
+    [addImages],
+  );
 
   return (
     <>
-      <h2 className="text-[22px] font-bold text-ink tracking-tight mb-1">
-        {t('booking_step1_title')}
-      </h2>
-      <p className="text-muted text-[14.5px] mb-6">
-        {t('booking_step1_subtitle', { name: pro.name.split(' ')[0] })}
-      </p>
+      <h2 className="text-[22px] font-bold text-ink tracking-tight mb-1">{t('booking_step1_title')}</h2>
+      <p className="text-muted text-[14.5px] mb-6">{t('booking_step1_subtitle', { name: pro.name.split(' ')[0] })}</p>
 
       {/* Service selection grid */}
       <div className="grid grid-cols-2 gap-3 mb-6">
@@ -48,15 +38,9 @@ export default function BookingStep1({
               key={svc.serviceId}
               onClick={() => selectService(svc)}
               className={`flex items-center justify-between px-5 py-4.5 rounded-[14px] border-[1.5px] text-left transition-all
-                ${
-                  active
-                    ? 'border-brand bg-brand-tint'
-                    : 'border-line bg-surface hover:border-brand-soft'
-                }`}
+                ${active ? 'border-brand bg-brand-tint' : 'border-line bg-surface hover:border-brand-soft'}`}
             >
-              <div className="font-semibold text-[15.5px] text-ink">
-                {isRTL && svc.nameAr ? svc.nameAr : svc.name}
-              </div>
+              <div className="font-semibold text-[15.5px] text-ink">{isRTL && svc.nameAr ? svc.nameAr : svc.name}</div>
               <div
                 className={`font-mono text-[13px] font-semibold shrink-0 ml-3
                 ${active ? 'text-brand' : 'text-ok'}`}
@@ -103,10 +87,7 @@ export default function BookingStep1({
         {form.images.length > 0 ? (
           <div className="flex gap-2.5 flex-wrap">
             {form.images.map((img, i) => (
-              <div
-                key={img.uri}
-                className="relative w-20 h-20 rounded-xl overflow-hidden border border-line shrink-0"
-              >
+              <div key={img.uri} className="relative w-20 h-20 rounded-xl overflow-hidden border border-line shrink-0">
                 <img src={img.uri} alt="" className="w-full h-full object-cover" />
                 <button
                   onClick={() => removeImage(i)}
@@ -142,12 +123,9 @@ export default function BookingStep1({
           >
             <Image size={22} strokeWidth={1.6} className="mx-auto mb-2" />
             <div className="text-[14px]">
-              {t('booking_photo_hint')}{' '}
-              <span className="font-semibold text-brand">{t('booking_photo_browse')}</span>
+              {t('booking_photo_hint')} <span className="font-semibold text-brand">{t('booking_photo_browse')}</span>
             </div>
-            <div className="text-[12px] mt-1 text-faint">
-              {t('booking_photo_max') ?? 'Up to 5 photos'}
-            </div>
+            <div className="text-[12px] mt-1 text-faint">{t('booking_photo_max') ?? 'Up to 5 photos'}</div>
           </button>
         )}
       </div>

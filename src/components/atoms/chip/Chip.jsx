@@ -10,11 +10,7 @@ export default function Chip({ active = false, onClick, children, className = ''
       aria-pressed={active}
       className={`
         px-3 py-1.5 rounded-full border text-sm font-medium transition-all
-        ${
-          active
-            ? 'bg-accent text-on-accent border-accent'
-            : 'border-line hover:border-line-2 text-ink'
-        }
+        ${active ? 'bg-accent text-on-accent border-accent' : 'border-line hover:border-line-2 text-ink'}
         ${!onClick ? 'pointer-events-none cursor-default' : 'cursor-pointer'}
         ${className}
       `}

@@ -40,9 +40,9 @@ export default function CreateBooking() {
 
   const initials = pro ? getInitials(pro.name) : '';
   const toneClass = proAvatarTone(0);
+  const isAr = i18n.language === 'ar';
 
-  const canContinue =
-    (step === 1 && canProceedStep1) || (step === 2 && canProceedStep2) || step === 3;
+  const canContinue = (step === 1 && canProceedStep1) || (step === 2 && canProceedStep2) || step === 3;
 
   if (proLoading) {
     return (
@@ -73,20 +73,17 @@ export default function CreateBooking() {
               {t('booking_back_to', { name: pro.name })}
             </button>
 
-            <h1 className="text-[32px] font-extrabold text-ink tracking-tight mb-2">
-              {t('booking_title')}
-            </h1>
+            <h1 className="text-[32px] font-extrabold text-ink tracking-tight mb-2">{t('booking_title')}</h1>
             <p className="text-[16px] text-muted mb-8">
               {t('booking_subtitle_with')} <strong className="text-ink">{pro.name}</strong>
               {' · '}
-              {pro.category}
+              {isAr && pro.categoryAr ? pro.categoryAr : pro.category}
             </p>
 
             <BookingProgress step={step} t={t} />
           </>
         )}
 
-        {/* Step content */}
         {step === 1 && (
           <BookingStep1
             pro={pro}
@@ -111,6 +108,7 @@ export default function CreateBooking() {
             isDayUnavailable={isDayUnavailable}
             isTimeUnavailable={isTimeUnavailable}
             t={t}
+            i18n={i18n}
           />
         )}
         {step === 3 && (
@@ -125,7 +123,7 @@ export default function CreateBooking() {
         )}
         {step === 4 && <BookingSuccess pro={pro} navigate={navigate} t={t} />}
 
-        {/* Footer nav — shared across all steps */}
+        {/* Footer nav */}
         {step < 4 && (
           <div className="flex justify-between gap-4 mt-10">
             {step > 1 ? (
@@ -145,11 +143,7 @@ export default function CreateBooking() {
               className={`${gfx.btnPrimary} flex items-center gap-2 px-7 h-11 text-[15px]
                 ${!canContinue || submitting ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
-              {submitting
-                ? t('booking_submitting')
-                : step === 3
-                  ? t('booking_send_request')
-                  : t('booking_continue')}
+              {submitting ? t('booking_submitting') : step === 3 ? t('booking_send_request') : t('booking_continue')}
               {!submitting && <ArrowRight size={16} />}
             </button>
           </div>

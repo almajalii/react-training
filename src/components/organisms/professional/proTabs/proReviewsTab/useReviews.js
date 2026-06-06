@@ -1,17 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
 import { getReviews } from '../../../../../network/api/reviews';
-
+//only runs when reviews tab is active.
 const useReviews = (professionalId) => {
+  //fetch reviews.
   const { data: reviews = [], isLoading } = useQuery({
-    //default value for reviews is an empty array to prevent undefined errors
-    queryKey: ['reviews', professionalId], //cache key to identify the query
+    queryKey: ['reviews', professionalId],
     queryFn: async () => {
       const res = await getReviews(professionalId);
       return Array.isArray(res) ? res : (res?.data ?? []);
     },
-    enabled: !!professionalId, //prevent the query from running if professionalId is not provided
+    //only run when pro is available.
+    enabled: !!professionalId,
   });
-
   return { reviews, isLoading };
 };
 

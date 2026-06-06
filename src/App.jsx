@@ -9,6 +9,7 @@ import MyAddresses from './screens/myAddresses/MyAddresses';
 import ProfessionalProfile from './screens/professionalProfile/ProfessionalProfile';
 import Profile from './screens/profile/Profile';
 import Register from './screens/register/Register';
+import MyBookings from './screens/myBookings/MyBookings';
 import { clearUser, setAuthChecked } from './store/authSlice';
 function App() {
   const { user, authChecked } = useSelector((state) => state.auth);
@@ -42,17 +43,12 @@ function App() {
           <Route path="/browse" element={<BrowseServices />} />
           <Route path="/browse/:categoryId" element={<BrowseServices />} />
           <Route path="/pro/:id" element={<ProfessionalProfile />} />
-          <Route
-            path="/book/:id"
-            element={user ? <CreateBooking /> : <Navigate to="/login" replace />}
-          />
+          <Route path="/book/:id" element={user ? <CreateBooking /> : <Navigate to="/login" replace />} />
           <Route path="/register" element={user ? <Navigate to="/" replace /> : <Register />} />
           <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
           <Route path="/profile" element={user ? <Profile /> : <Navigate to="/login" replace />} />
-          <Route
-            path="/my-addresses"
-            element={user ? <MyAddresses /> : <Navigate to="/login" replace />}
-          />
+          <Route path="/my-addresses" element={user ? <MyAddresses /> : <Navigate to="/login" replace />} />
+          <Route path="/my-bookings" element={user ? <MyBookings /> : <Navigate to="/login" replace />} />
         </Routes>
       </main>
     </BrowserRouter>

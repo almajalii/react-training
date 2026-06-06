@@ -1,11 +1,11 @@
 import { useTheme } from 'next-themes';
 import { useTranslation } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
-
+import { useMemo } from 'react';
 export default function AppToast() {
   const { theme } = useTheme();
   const { i18n } = useTranslation();
-  const isRTL = i18n.language === 'ar';
+  const isRTL = useMemo(() => i18n.language === 'ar', [i18n.language]);
 
   return (
     <ToastContainer
