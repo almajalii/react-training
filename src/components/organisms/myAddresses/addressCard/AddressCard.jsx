@@ -8,7 +8,6 @@ export default function AddressCard({ address, t, onEdit, onDelete }) {
 
   //address type icon
   const Ico = ADDRESS_TYPE_OPTIONS.find((o) => o.id === address?.type)?.Icon ?? MapPin;
-  const typeLabel = address?.type === ADDRESS_TYPES.HOUSE ? t('addr_type_house') : t('addr_type_apartment');
 
   //translated type label
   const typeLabel = address.type === ADDRESS_TYPES.HOUSE ? t('addr_type_house') : t('addr_type_apartment');

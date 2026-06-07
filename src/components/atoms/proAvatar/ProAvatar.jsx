@@ -1,9 +1,10 @@
 import { proAvatarTone } from '../../../styles/themeColors';
 import { getInitials } from '../../../utils/initials';
+import { useMemo } from 'react';
 
 export default function ProAvatar({ name, imageUrl, index = 0, size = 'md' }) {
-  const initials = getInitials(name ?? '');
-  const toneClass = proAvatarTone(index);
+  const initials = useMemo(() => getInitials(name ?? ''), [name]);
+  const toneClass = useMemo(() => proAvatarTone(index), [index]);
 
   const sizeClass =
     {

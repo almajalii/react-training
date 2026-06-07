@@ -1,9 +1,9 @@
 import { MapPin } from 'lucide-react';
 import { TIME_SLOTS } from '../../../../constants/times';
+import { useMemo } from 'react';
 
 export default function BookingStep2({
-  form,
-  set,
+  formik,
   selectDate,
   selectTime,
   selectAddress,
@@ -13,20 +13,19 @@ export default function BookingStep2({
   isTimeUnavailable,
   t,
   i18n,
+  navigate,
 }) {
-  const hasSelectedSavedAddress = savedAddresses.find((a) => a.id === form.addressId);
-
   return (
     <>
       <h2 className="text-[22px] font-bold text-ink tracking-tight mb-1">{t('booking_step2_title')}</h2>
       <p className="text-muted text-[14.5px] mb-6">{t('booking_step2_subtitle')}</p>
 
-      {/* Date picker */}
+      {/* 7-day date cards, grayed out if the pro doesn't work that day */}
       <div className="mb-7">
         <label className="block text-[13px] font-semibold text-ink-soft mb-3">{t('booking_date_label')}</label>
         <div className="grid grid-cols-7 gap-2">
           {dateSlots.map((d) => {
-            const active = form.scheduledDate === d.iso;
+            const active = formik.values.scheduledDate === d.iso;
             const unavailable = isDayUnavailable(d);
 
             return (
@@ -46,13 +45,13 @@ export default function BookingStep2({
               >
                 <div
                   className={`text-[11px] font-bold uppercase tracking-wider
-                    ${active && !unavailable ? 'text-brand' : 'text-muted'}`}
+                  ${active && !unavailable ? 'text-brand' : 'text-muted'}`}
                 >
                   {d.label}
                 </div>
                 <div
                   className={`text-[22px] font-extrabold mt-0.5 tracking-tight
-                    ${active && !unavailable ? 'text-brand' : 'text-ink'}`}
+                  ${active && !unavailable ? 'text-brand' : 'text-ink'}`}
                 >
                   {d.num}
                 </div>
@@ -63,18 +62,21 @@ export default function BookingStep2({
             );
           })}
         </div>
+        {formik.touched.scheduledDate && formik.errors.scheduledDate && (
+          <p className="mt-2 text-sm text-red-500">{formik.errors.scheduledDate}</p>
+        )}
       </div>
 
-      {/* Time picker */}
+      {/* time slots, hidden until a date is selected */}
       <div className="mb-7">
         <label className="block text-[13px] font-semibold text-ink-soft mb-3">{t('booking_time_label')}</label>
 
-        {!form.scheduledDate ? (
+        {!formik.values.scheduledDate ? (
           <p className="text-[13.5px] text-muted italic">{t('booking_time_pick_date_first')}</p>
         ) : (
           <div className="grid grid-cols-4 gap-2">
             {TIME_SLOTS.map((slot) => {
-              const active = form.scheduledTime === slot;
+              const active = formik.values.scheduledTime === slot;
               const unavailable = isTimeUnavailable(slot);
 
               return (
@@ -99,16 +101,19 @@ export default function BookingStep2({
             })}
           </div>
         )}
+        {formik.touched.scheduledTime && formik.errors.scheduledTime && (
+          <p className="mt-2 text-sm text-red-500">{formik.errors.scheduledTime}</p>
+        )}
       </div>
 
-      {/* Address */}
+      {/* saved address cards — required, no manual input */}
       <div>
         <label className="block text-[13px] font-semibold text-ink-soft mb-3">{t('booking_address_label')}</label>
 
-        {savedAddresses.length > 0 && (
-          <div className="flex flex-col gap-2.5 mb-3">
+        {savedAddresses.length > 0 ? (
+          <div className="flex flex-col gap-2.5">
             {savedAddresses.map((addr) => {
-              const active = form.addressId === addr.id;
+              const active = formik.values.addressId === addr.id;
               const detail = [
                 addr.street,
                 addr.buildingName,
@@ -134,22 +139,19 @@ export default function BookingStep2({
               );
             })}
           </div>
+        ) : (
+          // no saved addresses — takes the user to add one first
+          <p className="text-[13.5px] text-muted italic">
+            {t('booking_address_none')}{' '}
+            <button onClick={() => navigate('/my-addresses')} className="text-brand font-semibold hover:underline">
+              {t('booking_address_add_one')}
+            </button>
+          </p>
         )}
 
-        <div>
-          <label className="block text-[12px] font-medium text-muted mb-1.5">
-            {savedAddresses.length > 0 ? t('booking_address_or_type') : t('booking_address_type')}
-          </label>
-          <input
-            type="text"
-            placeholder={t('booking_address_placeholder')}
-            value={hasSelectedSavedAddress ? '' : form.address}
-            onChange={(e) => set({ address: e.target.value, addressId: '' })}
-            className="w-full px-4 py-3 rounded-xl border-[1.5px] border-line bg-surface
-              text-ink text-[15px] placeholder:text-faint focus:border-brand focus:ring-2
-              focus:ring-focus outline-none transition-all"
-          />
-        </div>
+        {formik.touched.address && formik.errors.address && (
+          <p className="mt-2 text-sm text-red-500">{formik.errors.address}</p>
+        )}
       </div>
     </>
   );

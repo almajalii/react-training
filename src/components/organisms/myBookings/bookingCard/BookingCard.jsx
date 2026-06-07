@@ -4,15 +4,21 @@ import { gfx } from '../../../../styles/themeColors';
 import { formatBookingDate } from '../../../../utils/bookingUtils';
 import ProAvatar from '../../../atoms/proAvatar/ProAvatar';
 import StatusBadge from '../../../atoms/statusBadge/StatusBadge';
+import { useMemo } from 'react';
 
 export default function BookingCard({ booking, index = 0, onClick }) {
   const { t, i18n } = useTranslation();
-  const isAr = i18n.language === 'ar';
+  const isAr = useMemo(() => i18n.language === 'ar', [i18n.language]);
 
-  const dateLabel = formatBookingDate(booking.scheduledDate, isAr);
-  const serviceName = isAr && booking.serviceNameAr ? booking.serviceNameAr : booking.serviceName;
+  const dateLabel = useMemo(() => formatBookingDate(booking.scheduledDate, isAr), [booking.scheduledDate, isAr]);
+
+  const serviceName = useMemo(
+    () => (isAr && booking.serviceNameAr ? booking.serviceNameAr : booking.serviceName),
+    [isAr, booking.serviceNameAr, booking.serviceName],
+  );
 
   return (
+    //a button that takes u to booking details
     <button onClick={onClick} className={`${gfx.card} ${gfx.cardHover} w-full text-left p-5 flex items-center gap-4`}>
       <ProAvatar name={booking.professionalName} imageUrl={booking.professionalImageUrl} index={index} size="md" />
 

@@ -381,5 +381,7 @@
   "bk_toast_cancelled": "Booking cancelled",
   "bk_toast_cancel_error": "Couldn't cancel the booking. Please try again.",
   "bk_toast_rescheduled": "Rescheduled to {{date}}, {{time}}",
-  "bk_toast_reschedule_error": "Couldn't reschedule. Please try again."
+  "bk_toast_reschedule_error": "Couldn't reschedule. Please try again.",
+  "booking_address_none": "You have no saved addresses.",
+"booking_address_add_one": "Add one here"
 }

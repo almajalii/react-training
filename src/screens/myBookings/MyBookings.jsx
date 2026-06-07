@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import Footer from '../../components/organisms/footer/Footer';
@@ -12,7 +11,6 @@ import { useMyBookings } from './useMyBookings';
 
 export default function MyBookings() {
   const [tab, setTab] = useState('upcoming');
-  const navigate = useNavigate();
   const user = useSelector((s) => s.auth.user);
 
   const {
@@ -28,14 +26,12 @@ export default function MyBookings() {
     reschedule,
     canReschedule,
     canCancel,
+    handleMessagePro,
   } = useMyBookings();
 
+  // Decide which list to show based on the active tab
   const list = tab === 'upcoming' ? upcoming : past;
   const loading = tab === 'upcoming' ? upcomingLoading : pastLoading;
-
-  const handleMessagePro = (professionalId) => {
-    navigate(`/messages?professionalId=${professionalId}`);
-  };
 
   return (
     <div className="min-h-screen bg-page flex flex-col">

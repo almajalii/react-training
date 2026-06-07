@@ -392,6 +392,8 @@
   "bk_toast_cancelled": "تم إلغاء الحجز",
   "bk_toast_cancel_error": "تعذّر إلغاء الحجز. يرجى المحاولة مرة أخرى.",
   "bk_toast_rescheduled": "تمت إعادة الجدولة إلى {{date}}، {{time}}",
-  "bk_toast_reschedule_error": "تعذّرت إعادة الجدولة. يرجى المحاولة مرة أخرى."
+  "bk_toast_reschedule_error": "تعذّرت إعادة الجدولة. يرجى المحاولة مرة أخرى.",
+  "booking_address_none": "ليس لديك عناوين محفوظة.",
+"booking_address_add_one": "أضف عنواناً"
 
 }

@@ -1,116 +1,99 @@
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useState, useMemo, useCallback } from 'react';
+import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate } from 'react-router-dom';
-import { TIME_SLOTS, DAY_SLOTS, DAY_SLOTS_AR, MONTH_SLOTS, MONTH_SLOTS_AR } from '../../constants/times';
+import { TIME_SLOTS } from '../../constants/times';
 import { getProfessional, getAddresses, createBooking, getBookedSlots, uploadBookingImages } from '../../network/api';
-
-const FULL_DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
-function buildDateSlots(isAr) {
-  const days = [];
-  for (let i = 0; i < 7; i++) {
-    const d = new Date();
-    d.setDate(d.getDate() + i);
-    const dayIndex = d.getDay();
-    const monIndex = d.getMonth();
-    days.push({
-      label: isAr ? DAY_SLOTS_AR[dayIndex] : DAY_SLOTS[dayIndex],
-      fullDay: FULL_DAY_NAMES[dayIndex],
-      num: d.getDate(),
-      month: isAr ? MONTH_SLOTS_AR[monIndex] : MONTH_SLOTS[monIndex],
-      iso: d.toISOString().split('T')[0],
-    });
-  }
-  return days;
-}
-
-// Converts any time string the backend might return into minutes since midnight.
-// Handles both "HH:mm" (24h) and "H:mm AM/PM" (12h) formats.
-function toMinutes(timeStr) {
-  if (!timeStr) return null;
-  const s = timeStr.trim();
-
-  const match12 = s.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
-  if (match12) {
-    let h = parseInt(match12[1], 10);
-    const m = parseInt(match12[2], 10);
-    const period = match12[3].toUpperCase();
-    if (period === 'AM' && h === 12) h = 0;
-    if (period === 'PM' && h !== 12) h += 12;
-    return h * 60 + m;
-  }
-
-  const match24 = s.match(/^(\d{1,2}):(\d{2})$/);
-  if (match24) {
-    return parseInt(match24[1], 10) * 60 + parseInt(match24[2], 10);
-  }
-
-  return null;
-}
-
-function isWithinWorkingHours(timeSlot, openTime, closeTime) {
-  const slot = toMinutes(timeSlot);
-  const open = toMinutes(openTime);
-  const close = toMinutes(closeTime);
-  if (slot == null || open == null || close == null) return true;
-  return slot >= open && slot <= close;
-}
+import { buildDateSlots, isWithinWorkingHours } from '../../utils/bookingUtils';
+import { step1Schema, step2Schema } from './createBookingValidation';
 
 export default function useCreateBooking() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-  const isAr = i18n.language === 'ar';
+  const isAr = useMemo(() => i18n.language === 'ar', [i18n]);
 
   const [step, setStep] = useState(1);
-  const [form, setForm] = useState({
-    serviceName: '',
-    serviceNameAr: '',
-    servicePrice: '',
-    description: '',
-    scheduledDate: '',
-    scheduledTime: '',
-    address: '',
-    addressId: '',
-    images: [],
-  });
-
-  const set = (k, v) => setForm((f) => ({ ...f, ...(typeof k === 'object' ? k : { [k]: v }) }));
-
-  // Re-build date slots whenever language changes so labels switch to Arabic
+  const [image, setImage] = useState(null);
   const dateSlots = useMemo(() => buildDateSlots(isAr), [isAr]);
 
-  // ── Remote data ────────────────────────────────────────────────────────────
-
+  //fetch pro details.
   const { data: pro, isLoading: proLoading } = useQuery({
     queryKey: ['professional', id],
     queryFn: () => getProfessional(id).then((res) => res?.data ?? res),
   });
 
+  //fetch saved addresses.
   const { data: savedAddresses = [] } = useQuery({
     queryKey: ['addresses'],
     queryFn: getAddresses,
   });
 
-  const { data: bookedSlots = [] } = useQuery({
-    queryKey: ['bookedSlots', id, form.scheduledDate],
-    queryFn: () => getBookedSlots(id, form.scheduledDate),
-    enabled: !!form.scheduledDate,
+  // Formik manages all the form state and validation for steps 1-3.
+  const formik = useFormik({
+    initialValues: {
+      serviceName: '',
+      serviceNameAr: '',
+      servicePrice: '',
+      description: '',
+      scheduledDate: '',
+      scheduledTime: '',
+      address: '',
+      addressId: '',
+    },
+
+    // validationSchema is dynamic, only validate the fields relevant to the current step.
+    validationSchema: step === 1 ? step1Schema(t) : step === 2 ? step2Schema(t) : null,
+    validateOnChange: true,
+    validateOnBlur: true,
+
+    // onSubmit handler, in step 3
+    onSubmit: async (values, { setSubmitting }) => {
+      try {
+        //if images has anything in it, upload them, otherwise use an empty array
+        const imageUrls = image ? await uploadBookingImages([image.file]) : [];
+
+        //create the booking
+        await createBooking({
+          professionalId: id,
+          serviceName: values.serviceName,
+          serviceNameAr: values.serviceNameAr || undefined,
+          servicePrice: values.servicePrice,
+          scheduledDate: values.scheduledDate,
+          scheduledTime: values.scheduledTime,
+          address: values.address,
+          description: values.description,
+          imageUrls,
+        });
+        //navigate to success screen
+        setStep(4);
+      } catch {
+        // error toast already fired by responseInterceptor
+      } finally {
+        setSubmitting(false);
+      }
+    },
   });
 
-  // ── Availability helpers ───────────────────────────────────────────────────
+  //fetch booked slots
+  const { data: bookedSlots = [] } = useQuery({
+    queryKey: ['bookedSlots', id, formik.values.scheduledDate],
+    queryFn: () => getBookedSlots(id, formik.values.scheduledDate),
+    enabled: !!formik.values.scheduledDate,
+  });
 
+  //pro working days names
   const workingDayNames = useMemo(() => {
     if (!pro?.workingHours?.length) return null;
     return new Set(pro.workingHours.map((wh) => wh.day));
   }, [pro]);
-
+  //pro working hours for a specifi day
   const workingHoursMap = useMemo(() => {
     if (!pro?.workingHours?.length) return {};
     return Object.fromEntries(pro.workingHours.map((wh) => [wh.day, wh]));
   }, [pro]);
-
+  //gets called for the 7 days in the date picker to disable unavailable days
   const isDayUnavailable = useCallback(
     (slot) => {
       if (!workingDayNames) return false;
@@ -118,83 +101,40 @@ export default function useCreateBooking() {
     },
     [workingDayNames],
   );
-
+  // gets called for each time slot of the selected day to disable unavailable times
   const isTimeUnavailable = useCallback(
     (timeSlot) => {
+      //booked by someone else & outside working hours.
       if (bookedSlots.includes(timeSlot)) return true;
-      if (form.scheduledDate && workingDayNames) {
-        const selectedSlot = dateSlots.find((d) => d.iso === form.scheduledDate);
+      if (formik.values.scheduledDate && workingDayNames) {
+        const selectedSlot = dateSlots.find((d) => d.iso === formik.values.scheduledDate);
         if (selectedSlot) {
           const wh = workingHoursMap[selectedSlot.fullDay];
           if (wh && !isWithinWorkingHours(timeSlot, wh.openTime, wh.closeTime)) return true;
         }
       }
-      return false;
+      return false; //means its available
     },
-    [bookedSlots, form.scheduledDate, workingDayNames, workingHoursMap, dateSlots],
+    [bookedSlots, formik.values.scheduledDate, workingDayNames, workingHoursMap, dateSlots],
   );
 
-  // ── Image handling ─────────────────────────────────────────────────────────
-
-  const addImages = useCallback((files) => {
-    const incoming = Array.from(files)
-      .slice(0, 5)
-      .map((file) => ({ uri: URL.createObjectURL(file), file }));
-    setForm((f) => {
-      const combined = [...f.images, ...incoming].slice(0, 5);
-      return { ...f, images: combined };
-    });
-  }, []);
-
-  const removeImage = useCallback((index) => {
-    setForm((f) => {
-      const next = [...f.images];
-      URL.revokeObjectURL(next[index].uri);
-      next.splice(index, 1);
-      return { ...f, images: next };
-    });
-  }, []);
-
-  // ── Booking submission ─────────────────────────────────────────────────────
-
-  const { mutate: submitBooking, isPending: submitting } = useMutation({
-    mutationFn: async () => {
-      const imageUrls = form.images.length ? await uploadBookingImages(form.images.map((img) => img.file)) : [];
-
-      return createBooking({
-        professionalId: id,
-        serviceName: form.serviceName,
-        serviceNameAr: form.serviceNameAr || undefined,
-        servicePrice: form.servicePrice,
-        scheduledDate: form.scheduledDate,
-        scheduledTime: form.scheduledTime,
-        address: form.address,
-        description: form.description,
-        imageUrls,
-      });
+  //handle image additon
+  const addImage = useCallback(
+    (file) => {
+      // revoke previous blob URL before replacing it to free memory
+      if (image) URL.revokeObjectURL(image.uri);
+      setImage({ uri: URL.createObjectURL(file), file });
     },
-    onSuccess: () => setStep(4),
-  });
+    [image],
+  );
 
-  // ── Step gate logic ────────────────────────────────────────────────────────
+  //handle image removal
+  const removeImage = useCallback(() => {
+    if (image) URL.revokeObjectURL(image.uri);
+    setImage(null);
+  }, [image]);
 
-  const canProceedStep1 = form.serviceName.length > 0 && form.description.trim().length > 5;
-
-  const canProceedStep2 =
-    form.scheduledDate.length > 0 && form.scheduledTime.length > 0 && form.address.trim().length > 2;
-
-  const handleContinue = () => {
-    if (step === 1 && !canProceedStep1) return;
-    if (step === 2 && !canProceedStep2) return;
-    if (step === 3) {
-      submitBooking();
-      return;
-    }
-    setStep((s) => s + 1);
-  };
-
-  // ── Selection helpers ──────────────────────────────────────────────────────
-
+  //builds price based on service selection, also sets the service name and price in formik values for submission later.
   const selectService = (svc) => {
     const priceStr =
       svc.minPrice != null && svc.maxPrice != null
@@ -202,31 +142,59 @@ export default function useCreateBooking() {
         : svc.minPrice != null
           ? `${t('browse_from')} ${svc.minPrice} JD`
           : t('pro_tbd');
-    set({ serviceName: svc.name, serviceNameAr: svc.nameAr || '', servicePrice: priceStr });
+    formik.setFieldValue('serviceName', svc.name, true);
+    formik.setFieldValue('serviceNameAr', svc.nameAr || '', false);
+    formik.setFieldValue('servicePrice', priceStr, false);
   };
-
+  //handles date selection, also resets time selection since available times may change with date.
   const selectDate = (slot) => {
     if (isDayUnavailable(slot)) return;
-    set({ scheduledDate: slot.iso, scheduledTime: '' });
+    formik.setFieldValue('scheduledDate', slot.iso, true);
+    formik.setFieldValue('scheduledTime', '', false);
   };
-
+  //handles time selection, sets the time in formik values for submission later.
   const selectTime = (slot) => {
     if (isTimeUnavailable(slot)) return;
-    set('scheduledTime', slot);
+    formik.setFieldValue('scheduledTime', slot, true);
   };
-
+  //handles address selection, sets the address string for submission and addressId for reference (if user wants to edit the address later, we can prefill the form with the selected address using the id).
   const selectAddress = (addr) => {
     const parts = [addr.area, addr.street];
     if (addr.buildingName) parts.push(addr.buildingName);
     if (addr.apartmentNumber) parts.push(`Apt ${addr.apartmentNumber}`);
-    set({ address: parts.join(', '), addressId: addr.id });
+    formik.setFieldValue('address', parts.join(', '), true);
+    formik.setFieldValue('addressId', addr.id, false);
   };
+  //handles continue.
+  const handleContinue = async () => {
+    // Validate only the fields for the current step before advancing.
+    const schema = step === 1 ? step1Schema(t) : step === 2 ? step2Schema(t) : null;
 
+    if (schema) {
+      // touch all fields so errors show up in the UI
+      const stepFields = Object.keys(schema.fields);
+      stepFields.forEach((field) => formik.setFieldTouched(field, true, false));
+
+      // check if there are any errors
+      const isValid = await schema.isValid(formik.values);
+
+      // if not valid, stop here, errors are already visible from the touch above
+      if (!isValid) return;
+    }
+
+    if (step === 3) {
+      formik.submitForm();
+      return;
+    }
+
+    setStep((s) => s + 1);
+  };
+  //builds readable date label
   const selectedDateLabel = useMemo(() => {
-    const slot = dateSlots.find((d) => d.iso === form.scheduledDate);
+    const slot = dateSlots.find((d) => d.iso === formik.values.scheduledDate);
     if (!slot) return '';
     return `${slot.label}, ${slot.month} ${slot.num}`;
-  }, [form.scheduledDate, dateSlots]);
+  }, [formik.values.scheduledDate, dateSlots]);
 
   return {
     t,
@@ -235,13 +203,10 @@ export default function useCreateBooking() {
     proLoading,
     step,
     setStep,
-    form,
-    set,
+    formik,
+    image,
     dateSlots,
     savedAddresses,
-    submitting,
-    canProceedStep1,
-    canProceedStep2,
     handleContinue,
     selectService,
     selectDate,
@@ -251,7 +216,7 @@ export default function useCreateBooking() {
     navigate,
     isDayUnavailable,
     isTimeUnavailable,
-    addImages,
+    addImage,
     removeImage,
   };
 }

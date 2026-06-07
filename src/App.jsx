@@ -17,7 +17,7 @@ function App() {
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
-    // No token — clear any stale user data and mark auth as checked
+    // No token, clear any stale user data and mark auth as checked
     if (!token) {
       dispatch(clearUser());
     }

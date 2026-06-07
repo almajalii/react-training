@@ -1,12 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { X, MessageCircle, RotateCcw, ChevronRight } from 'lucide-react';
 import { gfx } from '../../../../styles/themeColors';
-import { PAST_STATUSES, formatBookingDate } from '../../../../utils/bookingUtils';
 import ProAvatar from '../../../atoms/proAvatar/ProAvatar';
 import BookingDrawerBody from './BookingDrawerBody';
 import RescheduleSheet from './RescheduleSheet';
 import CancelSheet from './CancelSheet';
+import { useBookingDrawer } from './useBookingDrawer';
 
 export default function BookingDrawer({
   booking,
@@ -17,46 +15,25 @@ export default function BookingDrawer({
   canCancel,
   onMessagePro,
 }) {
-  const { t, i18n } = useTranslation();
-  const isAr = i18n.language === 'ar';
-
-  const [sheet, setSheet] = useState(null);
-  const backdropRef = useRef(null);
-
-  const isPast = PAST_STATUSES.has(booking?.status);
-  const dateLabel = formatBookingDate(booking?.scheduledDate, isAr, false);
-  const serviceName = isAr && booking?.serviceNameAr ? booking.serviceNameAr : booking?.serviceName;
-
-  useEffect(() => {
-    const handler = (e) => {
-      if (e.key === 'Escape' && !sheet) onClose();
-    };
-    document.addEventListener('keydown', handler);
-    return () => document.removeEventListener('keydown', handler);
-  }, [onClose, sheet]);
-
-  useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, []);
+  const {
+    t,
+    i18n,
+    isAr,
+    sheet,
+    setSheet,
+    backdropRef,
+    isPast,
+    dateLabel,
+    serviceName,
+    handleReschedule,
+    handleCancel,
+  } = useBookingDrawer({ booking, onClose, onCancel, onReschedule });
 
   if (!booking) return null;
 
-  const handleReschedule = (iso, time) => {
-    onReschedule({ id: booking.id, scheduledDate: iso, scheduledTime: time });
-    setSheet(null);
-  };
-
-  const handleCancel = () => {
-    onCancel({ id: booking.id, reason: 'Customer requested cancellation' });
-    setSheet(null);
-  };
-
   return (
     <>
-      {/* Backdrop */}
+      {/* clicking outside the drawer closes it */}
       <div
         ref={backdropRef}
         className="fixed inset-0 bg-ink/40 z-40"
@@ -65,16 +42,14 @@ export default function BookingDrawer({
         }}
       />
 
-      {/* Drawer */}
       <aside
         role="dialog"
         aria-label={t('bk_drawer_label')}
         className={`fixed top-0 ${isAr ? 'left-0' : 'right-0'} h-full w-full max-w-110
           z-50 bg-surface shadow-card-lg flex flex-col`}
       >
-        {/* ── Header ── */}
+        {/* booking reference + service name + close button */}
         <div className="px-5 pt-5 pb-4 border-b border-line shrink-0">
-          {/* Title row */}
           <div className="flex items-start justify-between gap-3 mb-3">
             <div>
               <p className="text-[12px] font-semibold uppercase tracking-wide text-muted mb-1">
@@ -91,7 +66,7 @@ export default function BookingDrawer({
             </button>
           </div>
 
-          {/* Pro row */}
+          {/* pro avatar, name, role, message button */}
           <div className="flex items-center gap-3">
             <ProAvatar name={booking.professionalName} imageUrl={booking.professionalImageUrl} size="sm" />
             <div className="flex-1 min-w-0">
@@ -110,7 +85,7 @@ export default function BookingDrawer({
           </div>
         </div>
 
-        {/* ── Body ── */}
+        {/* scrollable body — also where sub-sheets render on top */}
         <div className="flex-1 overflow-y-auto relative">
           <BookingDrawerBody booking={booking} dateLabel={dateLabel} isPast={isPast} t={t} />
 
@@ -128,7 +103,7 @@ export default function BookingDrawer({
           )}
         </div>
 
-        {/* ── Footer ── */}
+        {/* active booking actions: reschedule and cancel */}
         {!isPast && (canReschedule(booking) || canCancel(booking)) && (
           <div className="px-5 py-4 border-t border-line shrink-0 flex flex-col gap-2.5">
             {canReschedule(booking) && (
@@ -151,6 +126,7 @@ export default function BookingDrawer({
           </div>
         )}
 
+        {/* past booking actions: review and book again */}
         {isPast && (
           <div className="px-5 py-4 border-t border-line shrink-0 flex gap-3">
             {booking.status === 'Completed' && (

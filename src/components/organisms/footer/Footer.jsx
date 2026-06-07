@@ -2,43 +2,10 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import logo from '../../../assets/logo.svg';
 import { gfx } from '../../../styles/themeColors';
+import { FOOTER_COLUMNS, FOOTER_LEGAL_LINKS } from '../../../constants/footerLinks';
 
 export default function Footer() {
   const { t } = useTranslation();
-
-  const columns = [
-    {
-      headingKey: 'footer_customers',
-      links: [
-        { labelKey: 'footer_browse_services', to: '/browse' },
-        { labelKey: 'footer_how_it_works', to: '/how-it-works' },
-        { labelKey: 'footer_pricing', to: '/pricing' },
-        { labelKey: 'footer_help_center', to: '/help' },
-      ],
-    },
-    {
-      headingKey: 'footer_professionals',
-      links: [
-        { labelKey: 'footer_become_a_pro', to: '/become-a-pro' },
-        { labelKey: 'footer_verification', to: '/verification' },
-        { labelKey: 'footer_resources', to: '/resources' },
-      ],
-    },
-    {
-      headingKey: 'footer_company',
-      links: [
-        { labelKey: 'footer_about', to: '/about' },
-        { labelKey: 'footer_careers', to: '/careers' },
-        { labelKey: 'footer_contact', to: '/contact' },
-      ],
-    },
-  ];
-
-  const legalLinks = [
-    { labelKey: 'footer_privacy', to: '/privacy' },
-    { labelKey: 'footer_terms', to: '/terms' },
-    { labelKey: 'footer_cookies', to: '/cookies' },
-  ];
 
   return (
     <footer className="bg-page border-t border-line px-6 pt-14 pb-8">
@@ -53,16 +20,13 @@ export default function Footer() {
           </div>
 
           {/* Link columns */}
-          {columns.map((col) => (
+          {FOOTER_COLUMNS.map((col) => (
             <div key={col.headingKey}>
               <p className={`${gfx.caps} mb-4`}>{t(col.headingKey)}</p>
               <ul className="space-y-3">
                 {col.links.map((l) => (
                   <li key={l.labelKey}>
-                    <Link
-                      to={l.to}
-                      className="text-sm text-ink-soft hover:text-ink transition-colors"
-                    >
+                    <Link to={l.to} className="text-sm text-ink-soft hover:text-ink transition-colors">
                       {t(l.labelKey)}
                     </Link>
                   </li>
@@ -76,13 +40,10 @@ export default function Footer() {
         <div className="border-t border-line pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs text-muted">{t('footer_copyright')}</p>
           <div className="flex items-center gap-1">
-            {legalLinks.map((item, i) => (
+            {FOOTER_LEGAL_LINKS.map((item, i) => (
               <span key={item.labelKey} className="flex items-center gap-1">
                 {i > 0 && <span className="text-faint text-xs">·</span>}
-                <Link
-                  to={item.to}
-                  className="text-xs text-muted hover:text-ink transition-colors px-1"
-                >
+                <Link to={item.to} className="text-xs text-muted hover:text-ink transition-colors px-1">
                   {t(item.labelKey)}
                 </Link>
               </span>

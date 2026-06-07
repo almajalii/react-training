@@ -9,8 +9,9 @@ import Header from '../../components/organisms/header/Header';
 import { gfx, proAvatarTone } from '../../styles/themeColors';
 import { getInitials } from '../../utils/initials';
 import useCreateBooking from './useCreateBooking';
-
+import { useMemo } from 'react';
 export default function CreateBooking() {
+  // all logic and state lives in the hook, this file is pure layout
   const {
     t,
     i18n,
@@ -18,13 +19,10 @@ export default function CreateBooking() {
     proLoading,
     step,
     setStep,
-    form,
-    set,
+    formik,
+    image,
     dateSlots,
     savedAddresses,
-    submitting,
-    canProceedStep1,
-    canProceedStep2,
     handleContinue,
     selectService,
     selectDate,
@@ -34,16 +32,18 @@ export default function CreateBooking() {
     navigate,
     isDayUnavailable,
     isTimeUnavailable,
-    addImages,
+    addImage,
     removeImage,
   } = useCreateBooking();
 
   const initials = pro ? getInitials(pro.name) : '';
-  const toneClass = proAvatarTone(0);
-  const isAr = i18n.language === 'ar';
+  const toneClass = useMemo(() => proAvatarTone(0), []);
+  const isAr = useMemo(() => i18n.language === 'ar', [i18n.language]);
 
-  const canContinue = (step === 1 && canProceedStep1) || (step === 2 && canProceedStep2) || step === 3;
+  // step 3 is a review screen with no fields, always allow continue
+  const canContinue = step === 3 || formik.isValid;
 
+  //loading state
   if (proLoading) {
     return (
       <div className="min-h-screen bg-page">
@@ -55,16 +55,23 @@ export default function CreateBooking() {
       </div>
     );
   }
-
-  if (!pro) return null;
+  //error state
+  if (!pro)
+    return (
+      <>
+        <div>Pro not found</div>
+      </>
+    );
+  //success state
 
   return (
     <div className="min-h-screen bg-page">
       <Header />
       <div className="max-w-230 mx-auto px-8 py-10 pb-20">
+        {/* header and progress bar hidden on the success screen */}
         {step < 4 && (
           <>
-            {/* Back link */}
+            {/* takes the user back to the pro's profile page */}
             <button
               onClick={() => navigate(`/pro/${pro.id}`)}
               className="flex items-center gap-2 text-[13px] text-muted hover:text-ink mb-2 transition-colors"
@@ -80,26 +87,29 @@ export default function CreateBooking() {
               {isAr && pro.categoryAr ? pro.categoryAr : pro.category}
             </p>
 
+            {/* step indicator dots at the top — Service / Schedule / Confirm */}
             <BookingProgress step={step} t={t} />
           </>
         )}
 
+        {/* service picker, description textarea, photo upload */}
         {step === 1 && (
           <BookingStep1
             pro={pro}
-            form={form}
-            set={set}
+            formik={formik}
+            image={image}
             selectService={selectService}
-            addImages={addImages}
+            addImage={addImage}
             removeImage={removeImage}
             t={t}
             i18n={i18n}
           />
         )}
+
+        {/* date grid, time grid, address picker */}
         {step === 2 && (
           <BookingStep2
-            form={form}
-            set={set}
+            formik={formik}
             selectDate={selectDate}
             selectTime={selectTime}
             selectAddress={selectAddress}
@@ -107,25 +117,32 @@ export default function CreateBooking() {
             dateSlots={dateSlots}
             isDayUnavailable={isDayUnavailable}
             isTimeUnavailable={isTimeUnavailable}
+            navigate={navigate}
             t={t}
             i18n={i18n}
           />
         )}
+
+        {/* read-only summary card before the user submits */}
         {step === 3 && (
           <BookingStep3
             pro={pro}
-            form={form}
+            formik={formik}
+            image={image}
             selectedDateLabel={selectedDateLabel}
             initials={initials}
             toneClass={toneClass}
             t={t}
           />
         )}
+
+        {/* confirmation screen shown after successful submission */}
         {step === 4 && <BookingSuccess pro={pro} navigate={navigate} t={t} />}
 
-        {/* Footer nav */}
+        {/* back / continue navigation, hidden on success screen */}
         {step < 4 && (
           <div className="flex justify-between gap-4 mt-10">
+            {/* back button only shown from step 2 onwards */}
             {step > 1 ? (
               <button
                 onClick={() => setStep((s) => s - 1)}
@@ -137,14 +154,20 @@ export default function CreateBooking() {
             ) : (
               <span />
             )}
+
+            {/* disabled until the current step's yup schema passes */}
             <button
               onClick={handleContinue}
-              disabled={!canContinue || submitting}
+              disabled={!canContinue || formik.isSubmitting}
               className={`${gfx.btnPrimary} flex items-center gap-2 px-7 h-11 text-[15px]
-                ${!canContinue || submitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                ${!canContinue || formik.isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
-              {submitting ? t('booking_submitting') : step === 3 ? t('booking_send_request') : t('booking_continue')}
-              {!submitting && <ArrowRight size={16} />}
+              {formik.isSubmitting
+                ? t('booking_submitting')
+                : step === 3
+                  ? t('booking_send_request')
+                  : t('booking_continue')}
+              {!formik.isSubmitting && <ArrowRight size={16} />}
             </button>
           </div>
         )}

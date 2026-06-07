@@ -7,3 +7,5 @@ export const DAY_AR = {
   Friday: 'الجمعة',
   Saturday: 'السبت',
 };
+
+export const FULL_DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
