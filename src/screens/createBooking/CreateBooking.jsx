@@ -6,10 +6,9 @@ import BookingStep3 from '../../components/organisms/createBooking/bookingSteps/
 import BookingSuccess from '../../components/organisms/createBooking/bookingSteps/BookingSuccess';
 import Footer from '../../components/organisms/footer/Footer';
 import Header from '../../components/organisms/header/Header';
-import { gfx, proAvatarTone } from '../../styles/themeColors';
-import { getInitials } from '../../utils/initials';
+import { gfx } from '../../styles/themeColors';
 import useCreateBooking from './useCreateBooking';
-import { useMemo } from 'react';
+
 export default function CreateBooking() {
   // all logic and state lives in the hook, this file is pure layout
   const {
@@ -34,12 +33,10 @@ export default function CreateBooking() {
     isTimeUnavailable,
     addImage,
     removeImage,
+    initials,
+    toneClass,
+    isAr,
   } = useCreateBooking();
-
-  const initials = pro ? getInitials(pro.name) : '';
-  const toneClass = useMemo(() => proAvatarTone(0), []);
-  const isAr = useMemo(() => i18n.language === 'ar', [i18n.language]);
-
   // step 3 is a review screen with no fields, always allow continue
   const canContinue = step === 3 || formik.isValid;
 

@@ -10,9 +10,6 @@ import BookingEmptyState from './BookingEmptyState';
 import { useMyBookings } from './useMyBookings';
 
 export default function MyBookings() {
-  const [tab, setTab] = useState('upcoming');
-  const user = useSelector((s) => s.auth.user);
-
   const {
     t,
     upcoming,
@@ -27,6 +24,9 @@ export default function MyBookings() {
     canReschedule,
     canCancel,
     handleMessagePro,
+    user,
+    tab,
+    setTab,
   } = useMyBookings();
 
   // Decide which list to show based on the active tab

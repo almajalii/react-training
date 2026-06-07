@@ -15,6 +15,7 @@ export function useMyBookings() {
   const navigate = useNavigate();
   const user = useSelector((s) => s.auth.user);
   const qc = useQueryClient();
+  const [tab, setTab] = useState('upcoming');
 
   // Which booking drawer is open (by id), or null
   const [openId, setOpenId] = useState(null);
@@ -91,5 +92,8 @@ export function useMyBookings() {
     canReschedule,
     canCancel,
     handleMessagePro,
+    user,
+    tab,
+    setTab,
   };
 }

@@ -3,16 +3,17 @@ import { useState, useMemo, useCallback } from 'react';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate } from 'react-router-dom';
-import { TIME_SLOTS } from '../../constants/times';
 import { getProfessional, getAddresses, createBooking, getBookedSlots, uploadBookingImages } from '../../network/api';
 import { buildDateSlots, isWithinWorkingHours } from '../../utils/bookingUtils';
 import { step1Schema, step2Schema } from './createBookingValidation';
+import { getInitials } from '../../utils/initials';
+import { proAvatarTone } from '../../styles/themeColors';
 
 export default function useCreateBooking() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-  const isAr = useMemo(() => i18n.language === 'ar', [i18n]);
+  const isAr = i18n.language === 'ar';
 
   const [step, setStep] = useState(1);
   const [image, setImage] = useState(null);
@@ -23,6 +24,9 @@ export default function useCreateBooking() {
     queryKey: ['professional', id],
     queryFn: () => getProfessional(id).then((res) => res?.data ?? res),
   });
+
+  const initials = pro ? getInitials(pro.name) : '';
+  const toneClass = useMemo(() => proAvatarTone(0), []);
 
   //fetch saved addresses.
   const { data: savedAddresses = [] } = useQuery({
@@ -218,5 +222,8 @@ export default function useCreateBooking() {
     isTimeUnavailable,
     addImage,
     removeImage,
+    initials,
+    toneClass,
+    isAr,
   };
 }
