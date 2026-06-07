@@ -6,3 +6,4 @@ export { default as updateBooking } from './updateBooking';
 export { default as cancelBooking } from './cancelBooking';
 export { default as reportBooking } from './reportBooking';
 export { default as confirmPayment } from './confirmPayment';
+export { default as uploadBookingImages } from './uploadBookingImages';

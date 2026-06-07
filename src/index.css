@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* =============================================================================
    Tailwind v4 theme — register semantic tokens as Tailwind utilities.
@@ -11,52 +11,52 @@
 
 @theme {
   /* Surfaces */
-  --color-page:        var(--gf-page);
-  --color-page-2:      var(--gf-page-2);
-  --color-surface:     var(--gf-surface);
-  --color-surface-2:   var(--gf-surface-2);
-  --color-elev:        var(--gf-elev);
+  --color-page: var(--gf-page);
+  --color-page-2: var(--gf-page-2);
+  --color-surface: var(--gf-surface);
+  --color-surface-2: var(--gf-surface-2);
+  --color-elev: var(--gf-elev);
 
   /* Ink */
-  --color-ink:         var(--gf-ink);
-  --color-ink-soft:    var(--gf-ink-soft);
-  --color-muted:       var(--gf-muted);
-  --color-faint:       var(--gf-faint);
+  --color-ink: var(--gf-ink);
+  --color-ink-soft: var(--gf-ink-soft);
+  --color-muted: var(--gf-muted);
+  --color-faint: var(--gf-faint);
 
   /* Borders */
-  --color-line:        var(--gf-border);
-  --color-line-2:      var(--gf-border-strong);
+  --color-line: var(--gf-border);
+  --color-line-2: var(--gf-border-strong);
 
   /* Brand */
-  --color-brand:        var(--gf-brand);
+  --color-brand: var(--gf-brand);
   --color-brand-strong: var(--gf-brand-strong);
-  --color-brand-soft:   var(--gf-brand-soft);
-  --color-brand-tint:   var(--gf-brand-tint);
+  --color-brand-soft: var(--gf-brand-soft);
+  --color-brand-tint: var(--gf-brand-tint);
 
   /* Accent */
-  --color-accent:        var(--gf-accent);
-  --color-accent-hover:  var(--gf-accent-hover);
-  --color-on-accent:     var(--gf-on-accent);
+  --color-accent: var(--gf-accent);
+  --color-accent-hover: var(--gf-accent-hover);
+  --color-on-accent: var(--gf-on-accent);
 
   /* Chip */
-  --color-chip:        var(--gf-chip);
-  --color-chip-fg:     var(--gf-chip-text);
+  --color-chip: var(--gf-chip);
+  --color-chip-fg: var(--gf-chip-text);
 
   /* Shadows */
-  --shadow-card:       var(--gf-shadow-sm);
-  --shadow-card-md:    var(--gf-shadow-md);
-  --shadow-card-lg:    var(--gf-shadow-lg);
+  --shadow-card: var(--gf-shadow-sm);
+  --shadow-card-md: var(--gf-shadow-md);
+  --shadow-card-lg: var(--gf-shadow-lg);
 
   /* Letter-spacing */
-  --tracking-caps:     0.15em;
-  --tracking-tight2:  -0.035em;
+  --tracking-caps: 0.15em;
+  --tracking-tight2: -0.035em;
 
   /* Focus ring color */
-  --color-focus:       var(--gf-focus-ring);
+  --color-focus: var(--gf-focus-ring);
 
   /* Border radius extras */
-  --radius-2_5xl:      1.25rem;
-  --radius-3_5xl:      1.75rem;
+  --radius-2_5xl: 1.25rem;
+  --radius-3_5xl: 1.75rem;
 }
 
 /* =============================================================================
@@ -68,80 +68,80 @@
 
 :root {
   /* ── Surfaces ─────────────────────────────────────────────────────────── */
-  --gf-page:        #F7F3EA;   /* warm cream — main page bg                */
-  --gf-page-2:      #F1ECDF;   /* slightly deeper cream for sections       */
-  --gf-surface:     #FFFFFF;   /* white cards on cream                     */
-  --gf-surface-2:   #FAF7F0;   /* tinted cards / bands                     */
-  --gf-elev:        #FFFFFF;   /* elevated panels / dropdowns              */
+  --gf-page: #f7f3ea; /* warm cream — main page bg                */
+  --gf-page-2: #f1ecdf; /* slightly deeper cream for sections       */
+  --gf-surface: #ffffff; /* white cards on cream                     */
+  --gf-surface-2: #faf7f0; /* tinted cards / bands                     */
+  --gf-elev: #ffffff; /* elevated panels / dropdowns              */
 
   /* ── Ink (text) ───────────────────────────────────────────────────────── */
-  --gf-ink:         #0E1A2B;   /* near-black navy — headings, primary text */
-  --gf-ink-soft:    #1F2A3D;   /* body / secondary headings                */
-  --gf-muted:       #5C6675;   /* warm-cool grey, body & captions          */
-  --gf-faint:       #95A0AF;   /* meta / timestamps / divider dots         */
+  --gf-ink: #0e1a2b; /* near-black navy — headings, primary text */
+  --gf-ink-soft: #1f2a3d; /* body / secondary headings                */
+  --gf-muted: #5c6675; /* warm-cool grey, body & captions          */
+  --gf-faint: #95a0af; /* meta / timestamps / divider dots         */
 
   /* ── Borders ──────────────────────────────────────────────────────────── */
-  --gf-border:        #E7E2D5; /* warm soft border, blends into cream      */
-  --gf-border-strong: #D6CFBE; /* stronger border on hover / focus         */
+  --gf-border: #e7e2d5; /* warm soft border, blends into cream      */
+  --gf-border-strong: #d6cfbe; /* stronger border on hover / focus         */
 
   /* ── Brand orange — softened, warmer ─────────────────────────────────── */
-  --gf-brand:        #ED8936;  /* primary brand orange                     */
-  --gf-brand-strong: #C9701F;  /* hover / pressed                          */
-  --gf-brand-soft:   #FBE4C9;  /* peach highlight (e.g. text underline)    */
-  --gf-brand-tint:   #FDF3E4;  /* faint tint for chip backgrounds          */
+  --gf-brand: #ed8936; /* primary brand orange                     */
+  --gf-brand-strong: #c9701f; /* hover / pressed                          */
+  --gf-brand-soft: #fbe4c9; /* peach highlight (e.g. text underline)    */
+  --gf-brand-tint: #fdf3e4; /* faint tint for chip backgrounds          */
 
   /* ── Accent (the dark navy CTA) ───────────────────────────────────────── */
-  --gf-accent:        #0E1A2B;
-  --gf-accent-hover:  #1B2A42;
-  --gf-on-accent:     #FFFFFF;
+  --gf-accent: #0e1a2b;
+  --gf-accent-hover: #1b2a42;
+  --gf-on-accent: #ffffff;
 
   /* ── Chip / pill neutral surface ──────────────────────────────────────── */
-  --gf-chip:        #EEF1F4;
-  --gf-chip-text:   #0E1A2B;
+  --gf-chip: #eef1f4;
+  --gf-chip-text: #0e1a2b;
 
   /* ── State / focus ring ───────────────────────────────────────────────── */
-  --gf-focus-ring:  rgba(237, 137, 54, 0.30);
+  --gf-focus-ring: rgba(237, 137, 54, 0.3);
 
   /* ── Card shadow (warmer, softer) ─────────────────────────────────────── */
-  --gf-shadow-sm:   0 1px 2px 0 rgba(14, 26, 43, 0.04);
-  --gf-shadow-md:   0 1px 2px 0 rgba(14, 26, 43, 0.04), 0 8px 24px -12px rgba(14, 26, 43, 0.10);
-  --gf-shadow-lg:   0 1px 3px 0 rgba(14, 26, 43, 0.05), 0 24px 48px -20px rgba(14, 26, 43, 0.18);
+  --gf-shadow-sm: 0 1px 2px 0 rgba(14, 26, 43, 0.04);
+  --gf-shadow-md: 0 1px 2px 0 rgba(14, 26, 43, 0.04), 0 8px 24px -12px rgba(14, 26, 43, 0.1);
+  --gf-shadow-lg: 0 1px 3px 0 rgba(14, 26, 43, 0.05), 0 24px 48px -20px rgba(14, 26, 43, 0.18);
 }
 
 .dark {
   color-scheme: dark;
 
-  --gf-page:        #0B1726;
-  --gf-page-2:      #0E1B2C;
-  --gf-surface:     #122236;
-  --gf-surface-2:   #0F1E32;
-  --gf-elev:        #16263C;
+  --gf-page: #0b1726;
+  --gf-page-2: #0e1b2c;
+  --gf-surface: #122236;
+  --gf-surface-2: #0f1e32;
+  --gf-elev: #16263c;
 
-  --gf-ink:         #EAF1F8;
-  --gf-ink-soft:    #C8D3E1;
-  --gf-muted:       #8B97A9;
-  --gf-faint:       #5E6B7E;
+  --gf-ink: #eaf1f8;
+  --gf-ink-soft: #c8d3e1;
+  --gf-muted: #8b97a9;
+  --gf-faint: #5e6b7e;
 
-  --gf-border:        #1F3450;
-  --gf-border-strong: #2A4566;
+  --gf-border: #1f3450;
+  --gf-border-strong: #2a4566;
 
-  --gf-brand:        #F3A258;  /* slightly lighter on dark for legibility */
-  --gf-brand-strong: #ED8936;
-  --gf-brand-soft:   #3E2B16;
-  --gf-brand-tint:   #2A1E10;
+  --gf-brand: #f3a258; /* slightly lighter on dark for legibility */
+  --gf-brand-strong: #ed8936;
+  --gf-brand-soft: #3e2b16;
+  --gf-brand-tint: #2a1e10;
 
-  --gf-accent:        #EAF1F8;
-  --gf-accent-hover:  #FFFFFF;
-  --gf-on-accent:     #0E1A2B;
+  --gf-accent: #eaf1f8;
+  --gf-accent-hover: #ffffff;
+  --gf-on-accent: #0e1a2b;
 
-  --gf-chip:        #1A2C42;
-  --gf-chip-text:   #EAF1F8;
+  --gf-chip: #1a2c42;
+  --gf-chip-text: #eaf1f8;
 
-  --gf-focus-ring:  rgba(243, 162, 88, 0.30);
+  --gf-focus-ring: rgba(243, 162, 88, 0.3);
 
-  --gf-shadow-sm:   0 1px 2px 0 rgba(0, 0, 0, 0.30);
-  --gf-shadow-md:   0 2px 12px 0 rgba(0, 0, 0, 0.35);
-  --gf-shadow-lg:   0 8px 32px 0 rgba(0, 0, 0, 0.45);
+  --gf-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --gf-shadow-md: 0 2px 12px 0 rgba(0, 0, 0, 0.35);
+  --gf-shadow-lg: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
 }
 
 /* =============================================================================
@@ -160,7 +160,9 @@ body {
   letter-spacing: 0;
 }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+}
 
 :focus-visible {
   outline: 2px solid var(--gf-brand);
@@ -189,7 +191,7 @@ textarea:-webkit-autofill:hover,
 textarea:-webkit-autofill:focus,
 select:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 1000px var(--gf-surface) inset !important;
-          box-shadow: 0 0 0 1000px var(--gf-surface) inset !important;
+  box-shadow: 0 0 0 1000px var(--gf-surface) inset !important;
   -webkit-text-fill-color: var(--gf-ink) !important;
   caret-color: var(--gf-ink);
   border-color: var(--gf-border) !important;

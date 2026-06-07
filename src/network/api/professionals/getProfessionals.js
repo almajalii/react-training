@@ -1,25 +1,23 @@
 import { API_BASE_URL } from '../../config/apiConfig';
+import { HttpMethod } from '../../config/apiConstants';
 import { buildHeaders } from '../../http/requestInterceptor';
 import { handleResponse } from '../../http/responseInterceptor';
-import { HttpMethod } from '../../config/apiConstants';
 
 // categoryId: number — optional, filters by category
-// lat, lon: number — optional, enables distanceKm and populates isFavorite for logged-in users
 const getProfessionals = async (categoryId, lat, lon) => {
-    //URLSearchParams is like building a query string. 
-    const params = new URLSearchParams();
-    if (categoryId != null) params.set('categoryId', categoryId);
-    if (lat != null) params.set('lat', lat);
-    if (lon != null) params.set('lon', lon);
+  const params = new URLSearchParams();
+  if (categoryId != null) params.set('categoryId', categoryId); // != catches both null and undefined
+  if (lat != null && !isNaN(lat)) params.set('lat', lat);
+  if (lon != null && !isNaN(lon)) params.set('lon', lon);
 
-    const query = params.toString() ? `?${params}` : '';
+  const query = params.toString() ? `?${params}` : '';
 
-    return await handleResponse(
-        fetch(`${API_BASE_URL}/professionals${query}`, {
-            method: HttpMethod.GET,
-            headers: buildHeaders(true),
-        })
-    );
+  return await handleResponse(
+    fetch(`${API_BASE_URL}/professionals${query}`, {
+      method: HttpMethod.GET,
+      headers: buildHeaders(true),
+    }),
+  );
 };
 
 export default getProfessionals;

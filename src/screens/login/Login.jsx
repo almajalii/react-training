@@ -1,5 +1,5 @@
-import AuthLayout from '../../components/organisms/AuthLayout';
-import LoginForm from '../../components/organisms/LoginForm';
+import AuthLayout from '../../components/organisms/authLayout/AuthLayout';
+import LoginForm from '../../components/organisms/forms/LoginForm';
 import { useLogin } from './useLogin';
 
 export default function Login() {

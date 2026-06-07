@@ -1,10 +1,10 @@
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { setUser } from '../../store/authSlice';
 import { register } from '../../network/api';
+import { setUser } from '../../store/authSlice';
 import { registerValidationSchema } from './registerValidation';
 
 export function useRegister() {

@@ -2,6 +2,6 @@
 export const getToken = () => localStorage.getItem('authToken');
 // sets the token in local storage, if token is null or undefined, it removes the token from local storage
 export const setToken = (token) => {
-    if (token) localStorage.setItem('authToken', token);
-    else localStorage.removeItem('authToken');
+  if (token) localStorage.setItem('authToken', token);
+  else localStorage.removeItem('authToken');
 };

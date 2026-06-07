@@ -1,15 +1,16 @@
 import { API_BASE_URL } from '../../config/apiConfig';
+import { HttpMethod } from '../../config/apiConstants';
 import { buildHeaders } from '../../http/requestInterceptor';
 import { handleResponse } from '../../http/responseInterceptor';
-import { HttpMethod } from '../../config/apiConstants';
-//not used because its only in english so far
-// Returns { data: [{ id, name }] } — e.g. [{ id: 1, name: 'Plumbing' }, ...]
+
+// GET /api/categories
+// Returns { data: [{ id, name, nameAr }] }
 const getCategories = async () =>
-    await handleResponse(
-        fetch(`${API_BASE_URL}/categories`, {
-            method: HttpMethod.GET,
-            headers: buildHeaders(false),
-        })
-    );
+  await handleResponse(
+    fetch(`${API_BASE_URL}/categories`, {
+      method: HttpMethod.GET,
+      headers: buildHeaders(false),
+    }),
+  );
 
 export default getCategories;

@@ -14,7 +14,7 @@ import { gfx } from './themeColors';
 
 export const labelClass = gfx.label;
 
-export const inputClass      = `px-4 py-2.5 ${gfx.inputBase}`;
+export const inputClass = `px-4 py-2.5 ${gfx.inputBase}`;
 export const largeInputClass = `px-4 py-3 text-base ${gfx.inputBase}`;
 
 export const inputClassWithError = `${inputClass} ${gfx.inputError}`;

@@ -1,25 +1,26 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { clearUser, setAuthChecked } from './store/authSlice';
-import Register from './screens/register/Register';
-import Login from './screens/login/Login';
-import Home from './screens/home/Home';
+import { useSelector, useDispatch } from 'react-redux';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import BrowseServices from './screens/browse/BrowseServices';
-import Profile from './screens/profile/Profile';
+import CreateBooking from './screens/createBooking/CreateBooking';
+import Home from './screens/home/Home';
+import Login from './screens/login/Login';
+import MyAddresses from './screens/myAddresses/MyAddresses';
 import ProfessionalProfile from './screens/professionalProfile/ProfessionalProfile';
+import Profile from './screens/profile/Profile';
+import Register from './screens/register/Register';
+import MyBookings from './screens/myBookings/MyBookings';
+import { clearUser, setAuthChecked } from './store/authSlice';
 function App() {
   const { user, authChecked } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
-
-    // No token — clear any stale user data and mark auth as checked
+    // No token, clear any stale user data and mark auth as checked
     if (!token) {
       dispatch(clearUser());
     }
-
     dispatch(setAuthChecked(true));
   }, [dispatch]);
 
@@ -42,9 +43,12 @@ function App() {
           <Route path="/browse" element={<BrowseServices />} />
           <Route path="/browse/:categoryId" element={<BrowseServices />} />
           <Route path="/pro/:id" element={<ProfessionalProfile />} />
+          <Route path="/book/:id" element={user ? <CreateBooking /> : <Navigate to="/login" replace />} />
           <Route path="/register" element={user ? <Navigate to="/" replace /> : <Register />} />
           <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
           <Route path="/profile" element={user ? <Profile /> : <Navigate to="/login" replace />} />
+          <Route path="/my-addresses" element={user ? <MyAddresses /> : <Navigate to="/login" replace />} />
+          <Route path="/my-bookings" element={user ? <MyBookings /> : <Navigate to="/login" replace />} />
         </Routes>
       </main>
     </BrowserRouter>

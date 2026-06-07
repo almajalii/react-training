@@ -1,5 +1,5 @@
-import AuthLayout from '../../components/organisms/AuthLayout';
-import ProfileForm from '../../components/organisms/ProfileForm';
+import AuthLayout from '../../components/organisms/authLayout/AuthLayout';
+import ProfileForm from '../../components/organisms/forms/ProfileForm';
 import { useProfile } from './useProfile';
 
 export default function Profile() {
