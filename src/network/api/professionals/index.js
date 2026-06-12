@@ -5,3 +5,4 @@ export { default as getProfessionalServiceAreas } from './getProfessionalService
 export { default as getFavorites } from './getFavorites';
 export { default as toggleFavorite } from './toggleFavorite';
 export { default as getBookedSlots } from './getBookedSlots';
+export { default as getPagedProfessionals } from './getPagedProfessionals';
