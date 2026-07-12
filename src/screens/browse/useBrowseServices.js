@@ -71,6 +71,7 @@ export function useBrowseServices(categorySlug, filters) {
   }, [hasMore, isFetching])
 
   const [prevContextKey, setPrevContextKey] = useState(contextKey)
+  const isResetting = prevContextKey !== contextKey
   if (prevContextKey !== contextKey) {
     setPrevContextKey(contextKey)
     setPage(1)
@@ -78,7 +79,7 @@ export function useBrowseServices(categorySlug, filters) {
 
   return {
     professionals,
-    loading: isLoading && page === 1,
+    loading: (isLoading && page === 1) || isResetting,
     isFetchingMore: isFetching && page > 1,
     hasMore,
     loadMore,

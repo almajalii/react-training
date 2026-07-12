@@ -1,20 +1,12 @@
-import { X, MessageCircle, RotateCcw, ChevronRight } from 'lucide-react';
-import { gfx } from '../../../../styles/themeColors';
-import ProAvatar from '../../../atoms/proAvatar/ProAvatar';
-import BookingDrawerBody from './BookingDrawerBody';
-import RescheduleSheet from './RescheduleSheet';
-import CancelSheet from './CancelSheet';
-import { useBookingDrawer } from './useBookingDrawer';
+import { X, MessageCircle, ChevronRight } from 'lucide-react'
+import { gfx } from '../../../../styles/themeColors'
+import ProAvatar from '../../../atoms/proAvatar/ProAvatar'
+import BookingDrawerBody from './BookingDrawerBody'
+import CancelSheet from './CancelSheet'
+import { useBookingDrawer } from './useBookingDrawer'
+import ReviewSheet from './ReviewSheet'
 
-export default function BookingDrawer({
-  booking,
-  onClose,
-  onCancel,
-  onReschedule,
-  canReschedule,
-  canCancel,
-  onMessagePro,
-}) {
+export default function BookingDrawer({ booking, onClose, onCancel, canCancel, onMessagePro }) {
   const {
     t,
     i18n,
@@ -25,11 +17,12 @@ export default function BookingDrawer({
     isPast,
     dateLabel,
     serviceName,
-    handleReschedule,
     handleCancel,
-  } = useBookingDrawer({ booking, onClose, onCancel, onReschedule });
+    handleAddReview,
+    submittingReview,
+  } = useBookingDrawer({ booking, onClose, onCancel })
 
-  if (!booking) return null;
+  if (!booking) return null
 
   return (
     <>
@@ -37,8 +30,8 @@ export default function BookingDrawer({
       <div
         ref={backdropRef}
         className="fixed inset-0 bg-ink/40 z-40"
-        onMouseDown={(e) => {
-          if (e.target === backdropRef.current) onClose();
+        onMouseDown={e => {
+          if (e.target === backdropRef.current) onClose()
         }}
       />
 
@@ -89,9 +82,6 @@ export default function BookingDrawer({
         <div className="flex-1 overflow-y-auto relative">
           <BookingDrawerBody booking={booking} dateLabel={dateLabel} isPast={isPast} t={t} />
 
-          {sheet === 'reschedule' && (
-            <RescheduleSheet onConfirm={handleReschedule} onClose={() => setSheet(null)} t={t} i18n={i18n} />
-          )}
           {sheet === 'cancel' && (
             <CancelSheet
               booking={booking}
@@ -101,28 +91,26 @@ export default function BookingDrawer({
               t={t}
             />
           )}
+          {sheet === 'review' && (
+            <ReviewSheet
+              proName={booking.professionalName}
+              onConfirm={handleAddReview}
+              onClose={() => setSheet(null)}
+              submitting={submittingReview}
+              t={t}
+            />
+          )}
         </div>
 
-        {/* active booking actions: reschedule and cancel */}
-        {!isPast && (canReschedule(booking) || canCancel(booking)) && (
+        {/* active booking actions: cancel */}
+        {!isPast && canCancel(booking) && (
           <div className="px-5 py-4 border-t border-line shrink-0 flex flex-col gap-2.5">
-            {canReschedule(booking) && (
-              <button
-                onClick={() => setSheet('reschedule')}
-                className={`${gfx.btnSecondary} w-full h-11 text-[14.5px] flex items-center justify-center gap-2`}
-              >
-                <RotateCcw size={15} />
-                {t('bk_action_reschedule')}
-              </button>
-            )}
-            {canCancel(booking) && (
-              <button
-                onClick={() => setSheet('cancel')}
-                className="w-full h-11 text-[14.5px] font-medium text-red-500 hover:text-red-600 transition-colors"
-              >
-                {t('bk_action_cancel')}
-              </button>
-            )}
+            <button
+              onClick={() => setSheet('cancel')}
+              className="w-full h-11 text-[14.5px] font-medium text-red-500 hover:text-red-600 transition-colors"
+            >
+              {t('bk_action_cancel')}
+            </button>
           </div>
         )}
 
@@ -130,7 +118,9 @@ export default function BookingDrawer({
         {isPast && (
           <div className="px-5 py-4 border-t border-line shrink-0 flex gap-3">
             {booking.status === 'Completed' && (
-              <button className={`${gfx.btnPrimary} flex-1 h-11 text-[14.5px]`}>{t('bk_action_review')}</button>
+              <button onClick={() => setSheet('review')} className={`${gfx.btnPrimary} flex-1 h-11 text-[14.5px]`}>
+                {t('bk_action_review')}
+              </button>
             )}
             <button className={`${gfx.btnSecondary} flex-1 h-11 text-[14.5px] flex items-center justify-center gap-2`}>
               <ChevronRight size={15} />
@@ -140,5 +130,5 @@ export default function BookingDrawer({
         )}
       </aside>
     </>
-  );
+  )
 }
