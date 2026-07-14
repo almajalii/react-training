@@ -1,13 +1,13 @@
-import { useSelector } from 'react-redux';
-import { useState } from 'react';
-import Footer from '../../components/organisms/footer/Footer';
-import Header from '../../components/organisms/header/Header';
-import TabBar from '../../components/molecules/tabBar/TabBar';
-import BookingCard from '../../components/organisms/myBookings/bookingCard/BookingCard';
-import BookingDrawer from '../../components/organisms/myBookings/bookingDrawer/BookingDrawer';
-import BookingCardSkeleton from './BookingCardSkeleton';
-import BookingEmptyState from './BookingEmptyState';
-import { useMyBookings } from './useMyBookings';
+import { useSelector } from 'react-redux'
+import { useState } from 'react'
+import Footer from '../../components/organisms/footer/Footer'
+import Header from '../../components/organisms/header/Header'
+import TabBar from '../../components/molecules/tabBar/TabBar'
+import BookingCard from '../../components/organisms/myBookings/bookingCard/BookingCard'
+import BookingDrawer from '../../components/organisms/myBookings/bookingDrawer/BookingDrawer'
+import BookingCardSkeleton from './BookingCardSkeleton'
+import BookingEmptyState from './BookingEmptyState'
+import { useMyBookings } from './useMyBookings'
 
 export default function MyBookings() {
   const {
@@ -20,18 +20,16 @@ export default function MyBookings() {
     openDrawer,
     closeDrawer,
     cancel,
-    reschedule,
-    canReschedule,
     canCancel,
     handleMessagePro,
     user,
     tab,
     setTab,
-  } = useMyBookings();
+  } = useMyBookings()
 
   // Decide which list to show based on the active tab
-  const list = tab === 'upcoming' ? upcoming : past;
-  const loading = tab === 'upcoming' ? upcomingLoading : pastLoading;
+  const list = tab === 'upcoming' ? upcoming : past
+  const loading = tab === 'upcoming' ? upcomingLoading : pastLoading
 
   return (
     <div className="min-h-screen bg-page flex flex-col">
@@ -60,7 +58,7 @@ export default function MyBookings() {
         {/* Loading skeletons */}
         {loading && (
           <div className="flex flex-col gap-3">
-            {[0, 1, 2].map((i) => (
+            {[0, 1, 2].map(i => (
               <BookingCardSkeleton key={i} />
             ))}
           </div>
@@ -86,12 +84,10 @@ export default function MyBookings() {
           booking={openBooking}
           onClose={closeDrawer}
           onCancel={cancel}
-          onReschedule={reschedule}
-          canReschedule={canReschedule}
           canCancel={canCancel}
           onMessagePro={handleMessagePro}
         />
       )}
     </div>
-  );
+  )
 }

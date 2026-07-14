@@ -1,28 +1,30 @@
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import BrowseServices from './screens/browse/BrowseServices';
-import CreateBooking from './screens/createBooking/CreateBooking';
-import Home from './screens/home/Home';
-import Login from './screens/login/Login';
-import MyAddresses from './screens/myAddresses/MyAddresses';
-import ProfessionalProfile from './screens/professionalProfile/ProfessionalProfile';
-import Profile from './screens/profile/Profile';
-import Register from './screens/register/Register';
-import MyBookings from './screens/myBookings/MyBookings';
-import { clearUser, setAuthChecked } from './store/authSlice';
+import { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import BrowseServices from './screens/browse/BrowseServices'
+import CreateBooking from './screens/createBooking/CreateBooking'
+import Home from './screens/home/Home'
+import Login from './screens/login/Login'
+import MyAddresses from './screens/myAddresses/MyAddresses'
+import ProfessionalProfile from './screens/professionalProfile/ProfessionalProfile'
+import Profile from './screens/profile/Profile'
+import Register from './screens/register/Register'
+import MyBookings from './screens/myBookings/MyBookings'
+import { clearUser, setAuthChecked } from './store/authSlice'
+import ServiceResults from './screens/searchResults/serviceResults/ServiceResults'
+import AreaResults from './screens/searchResults/areaResults/AreaResults'
 function App() {
-  const { user, authChecked } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
+  const { user, authChecked } = useSelector(state => state.auth)
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('authToken')
     // No token, clear any stale user data and mark auth as checked
     if (!token) {
-      dispatch(clearUser());
+      dispatch(clearUser())
     }
-    dispatch(setAuthChecked(true));
-  }, [dispatch]);
+    dispatch(setAuthChecked(true))
+  }, [dispatch])
 
   if (!authChecked) {
     return (
@@ -32,7 +34,7 @@ function App() {
           <p className="text-muted">Loading…</p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -48,11 +50,14 @@ function App() {
           <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
           <Route path="/profile" element={user ? <Profile /> : <Navigate to="/login" replace />} />
           <Route path="/my-addresses" element={user ? <MyAddresses /> : <Navigate to="/login" replace />} />
+          <Route path="/my-bookings/:bookingId" element={user ? <MyBookings /> : <Navigate to="/login" replace />} />
           <Route path="/my-bookings" element={user ? <MyBookings /> : <Navigate to="/login" replace />} />
+          <Route path="/service/:serviceId" element={<ServiceResults />} />
+          <Route path="/area/:areaId" element={<AreaResults />} />
         </Routes>
       </main>
     </BrowserRouter>
-  );
+  )
 }
 
-export default App;
+export default App

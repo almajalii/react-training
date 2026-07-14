@@ -1,9 +1,9 @@
-import ProCard from '../proCard/ProCard';
-import ProCardSkeleton from '../proCard/ProCardSkeleton';
-import { useBrowseResults } from './useBrowseResults';
+import ProCard from '../proCard/ProCard'
+import ProCardSkeleton from '../proCard/ProCardSkeleton'
+import { useBrowseResults } from './useBrowseResults'
 
 export default function BrowseResults({ professionals, loading, totalCount }) {
-  const { t, SKELETON_COUNT } = useBrowseResults();
+  const { t, SKELETON_COUNT } = useBrowseResults()
 
   return (
     <div>
@@ -14,7 +14,8 @@ export default function BrowseResults({ professionals, loading, totalCount }) {
             <span className="inline-block w-24 h-4 bg-chip rounded animate-pulse" />
           ) : (
             <>
-              <span className="font-semibold text-ink">{totalCount}</span> {t('browse_pros_available')}
+              <span className="font-semibold text-ink">{totalCount}</span>{' '}
+              {t('browse_pros_available')}
             </>
           )}
         </p>
@@ -43,5 +44,5 @@ export default function BrowseResults({ professionals, loading, totalCount }) {
         </div>
       )}
     </div>
-  );
+  )
 }

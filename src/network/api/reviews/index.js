@@ -1,2 +1,5 @@
-export { default as getReviews } from './getReviews';
-export { default as getPaginatedReviews } from './getPaginatedReviews';
+export { default as getReviews } from './getReviews'
+export { default as getPaginatedReviews } from './getPaginatedReviews'
+export { default as addReview } from './addReview'
+export { default as editReview } from './editReview'
+export { default as deleteReview } from './deleteReview'
